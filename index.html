@@ -2216,6 +2216,113 @@
   }
 
   /* ---------- PRICING (тарифы) ---------- */
+  #pricing { position: relative; overflow: hidden; isolation: isolate; }
+
+  /* декоративный фон секции тарифов */
+  .pricing__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  /* крупный кандзи-водяной знак 道 (путь) */
+  .pricing__bg-kanji {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    transform: translate(-50%, -50%);
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 800;
+    font-size: clamp(320px, 46vw, 660px);
+    line-height: 1;
+    color: rgba(255,255,255,0.022);
+    letter-spacing: -0.05em;
+    user-select: none;
+    text-shadow: 0 0 80px rgba(255,200,215,0.05);
+  }
+  /* два мягких сакура-сияния по краям */
+  .pricing__bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+  }
+  .pricing__bg-glow--1 {
+    width: 480px; height: 480px;
+    left: -12%; top: 8%;
+    background: radial-gradient(circle, rgba(255,190,210,0.10), transparent 70%);
+    animation: priceGlow 11s ease-in-out infinite;
+  }
+  .pricing__bg-glow--2 {
+    width: 560px; height: 560px;
+    right: -14%; bottom: -6%;
+    background: radial-gradient(circle, rgba(170,200,255,0.07), transparent 70%);
+    animation: priceGlow 13s ease-in-out infinite reverse;
+  }
+  @keyframes priceGlow {
+    0%, 100% { opacity: .7; transform: translateY(0) scale(1); }
+    50%      { opacity: 1;  transform: translateY(-18px) scale(1.06); }
+  }
+  /* тонкая точечная сетка, маскируется к краям */
+  .pricing__bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1.2px);
+    background-size: 30px 30px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at center, #000 30%, transparent 80%);
+            mask-image: radial-gradient(ellipse 70% 60% at center, #000 30%, transparent 80%);
+    opacity: .5;
+  }
+  /* горизонтальные «линии-рельсы» — только под заголовком секции, не мешают контенту */
+  .pricing__bg::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    top: 11%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,200,215,0.16) 30%, rgba(255,200,215,0.16) 70%, transparent);
+  }
+
+  /* вертикальные световые «лучи», медленно проходящие по секции */
+  .pricing__bg-beams {
+    position: absolute;
+    inset: 0;
+    -webkit-mask-image: radial-gradient(ellipse 75% 70% at center, #000 35%, transparent 85%);
+            mask-image: radial-gradient(ellipse 75% 70% at center, #000 35%, transparent 85%);
+    overflow: hidden;
+  }
+  .pricing__beam {
+    position: absolute;
+    top: -10%;
+    width: 1px;
+    height: 120%;
+    background: linear-gradient(180deg, transparent, rgba(255,255,255,0.16), transparent);
+    opacity: 0;
+    animation: beamSweep 9s ease-in-out infinite;
+  }
+  .pricing__beam:nth-child(1) { left: 18%; animation-delay: 0s;   }
+  .pricing__beam:nth-child(2) { left: 50%; animation-delay: 3s; background: linear-gradient(180deg, transparent, rgba(255,200,215,0.22), transparent); }
+  .pricing__beam:nth-child(3) { left: 82%; animation-delay: 6s;   }
+  @keyframes beamSweep {
+    0%   { opacity: 0; transform: translateY(-30px); }
+    50%  { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(30px); }
+  }
+
+  /* плавающие искры */
+  #pricing > .container { position: relative; z-index: 1; }
+
+  @media (max-width: 540px) {
+    .pricing__bg-grid { background-size: 24px 24px; }
+    .pricing__bg::before { top: 7%; }
+    .pricing__beam:nth-child(1) { left: 12%; }
+    .pricing__beam:nth-child(3) { left: 88%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pricing__beam, .pricing__bg-glow { animation: none; }
+  }
+
   .pricing__lead {
     font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 500;
@@ -2226,270 +2333,493 @@
     max-width: 720px;
     margin: 0 0 56px;
   }
+  .pricing__lead b { color: var(--text); font-weight: 700; }
+  .pricing__lead .sakura-word {
+    color: #ffd2dc;
+    font-weight: 700;
+    text-shadow: 0 0 22px rgba(255,180,200,0.45);
+  }
 
   .pricing__grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: 18px;
     align-items: stretch;
   }
-  @media (max-width: 980px) { .pricing__grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; } }
+  @media (max-width: 980px) { .pricing__grid { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; } }
 
   .plan {
     position: relative;
     display: flex;
     flex-direction: column;
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0) 55%),
-      #0d0d0d;
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 22px;
-    padding: 30px 28px 30px;
+      radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,0.05), transparent 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0) 50%),
+      #0c0c0c;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    padding: 30px 26px 28px;
     overflow: hidden;
     isolation: isolate;
     transition:
       border-color .4s ease,
       box-shadow .4s ease,
-      background .4s ease,
       transform .5s cubic-bezier(.2,.8,.2,1);
   }
-  /* нижняя световая черта, как у модулей */
-  .plan::after {
+  /* мягкий радужный отблеск в углу карточки */
+  .plan::before {
     content: '';
     position: absolute;
-    left: 28px; right: 28px; bottom: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.85), transparent);
-    box-shadow: 0 0 12px rgba(255,255,255,0.4);
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform .6s cubic-bezier(.2,.8,.2,1);
-    z-index: 3;
+    top: -40%; right: -30%;
+    width: 75%; height: 75%;
+    background: radial-gradient(circle, var(--plan-accent, rgba(255,255,255,0.12)), transparent 65%);
+    opacity: .5;
+    filter: blur(10px);
     pointer-events: none;
+    z-index: 0;
+    transition: opacity .45s ease;
   }
+  .plan:hover::before { opacity: .9; }
+  .plan > * { position: relative; z-index: 1; }
   .plan:hover {
-    border-color: rgba(255,255,255,0.22);
-    box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06) inset;
+    border-color: rgba(255,255,255,0.2);
+    box-shadow: 0 30px 70px rgba(0,0,0,0.55);
     transform: translateY(-6px);
   }
-  .plan:hover::after { transform: scaleX(1); }
-  .plan > * { position: relative; z-index: 1; }
 
-  /* выделенный тариф по центру */
+  /* индивидуальные акценты тарифов */
+  .plan--start  { --plan-accent: rgba(150,200,255,0.16); }
+  .plan--core   { --plan-accent: rgba(255,200,215,0.22); }
+  .plan--pro    { --plan-accent: rgba(255,225,170,0.18); }
+
+  /* выделенный тариф — сакура-обводка + свечение */
   .plan--feature {
-    border-color: rgba(255,255,255,0.28);
+    border-color: transparent;
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0) 60%),
-      #0f0f0f;
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.06) inset, 0 18px 50px rgba(0,0,0,0.45);
+      radial-gradient(130% 90% at 50% -10%, rgba(255,200,215,0.10), transparent 55%),
+      linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0) 45%),
+      #0d0b0c;
+  }
+  /* вращающаяся градиентная рамка */
+  .plan--feature::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    padding: 1.4px;
+    background: conic-gradient(from var(--ang, 0deg),
+      rgba(255,210,222,0.05),
+      rgba(255,190,210,0.85),
+      rgba(255,255,255,0.9),
+      rgba(255,190,210,0.85),
+      rgba(255,210,222,0.05));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    animation: planSpin 6s linear infinite;
+    pointer-events: none;
+    z-index: 2;
+  }
+  @property --ang { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+  @keyframes planSpin { to { --ang: 360deg; } }
+  .plan--feature {
+    box-shadow: 0 22px 60px rgba(0,0,0,0.5), 0 0 50px rgba(255,180,205,0.12);
+  }
+  .plan--feature:hover {
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 70px rgba(255,180,205,0.22);
   }
   @media (min-width: 981px) {
-    .plan--feature { margin-top: -10px; margin-bottom: -10px; padding-top: 40px; padding-bottom: 40px; }
+    .plan--feature { margin-top: -14px; margin-bottom: -14px; padding-top: 44px; padding-bottom: 40px; }
+  }
+
+  /* шапка карточки: иконка + лента */
+  .plan__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .plan__icon {
+    width: 46px; height: 46px;
+    border-radius: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.03);
+    color: var(--text);
+  }
+  .plan__icon svg { width: 22px; height: 22px; }
+  .plan--feature .plan__icon {
+    border-color: rgba(255,200,215,0.4);
+    background: rgba(255,200,215,0.08);
+    color: #ffd2dc;
+    box-shadow: 0 0 20px rgba(255,180,205,0.25);
   }
 
   .plan__tag {
-    position: absolute;
-    top: 16px; right: 16px;
-    z-index: 4;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9.5px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    padding: 5px 10px;
-    border-radius: 100px;
-    background: var(--text);
-    color: #0a0a0a;
-    box-shadow: 0 0 18px rgba(255,255,255,0.35);
-    animation: tagPulse 2.6s ease-in-out infinite;
-  }
-  @keyframes tagPulse {
-    0%, 100% { box-shadow: 0 0 16px rgba(255,255,255,0.30); }
-    50%      { box-shadow: 0 0 26px rgba(255,255,255,0.55); }
-  }
-
-  .plan__head {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 6px;
-  }
-  .plan__num {
+    gap: 7px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-  }
-  .plan__name {
-    font-family: 'Bricolage Grotesque', 'Manrope', sans-serif;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    line-height: 1.1;
-    margin: 8px 0 4px;
-  }
-  .plan__term {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--muted);
+    padding: 7px 13px;
+    border-radius: 100px;
+    color: #1a0e12;
+    background: linear-gradient(100deg, #ffe2ea, #ffc4d4 60%, #ffd9e2);
+    box-shadow: 0 0 22px rgba(255,180,205,0.5);
+    font-weight: 600;
+  }
+  .plan__tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #c2185b;
+    box-shadow: 0 0 8px rgba(194,24,91,0.8);
+    animation: pulse 2s ease infinite;
   }
 
+  .plan__name {
+    font-family: 'Bricolage Grotesque', 'Manrope', sans-serif;
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0 0 6px;
+  }
+  .plan--feature .plan__name {
+    background: linear-gradient(120deg, #ffffff 30%, #ffd6e0 90%);
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .plan__for {
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: #8e8e8e;
+    margin-bottom: 22px;
+    min-height: 38px;
+  }
+  .plan__for b { color: rgba(255,255,255,0.9); font-weight: 600; }
+
+  /* цена */
   .plan__price {
     display: flex;
-    align-items: baseline;
-    gap: 8px;
-    margin: 22px 0 24px;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 22px;
     padding-bottom: 22px;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .plan__price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
   }
   .plan__price-val {
     font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 38px;
+    font-size: 40px;
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1;
-    text-shadow: 0 0 26px rgba(255,255,255,0.18);
   }
-  .plan__price-val.is-soft { font-size: 26px; color: rgba(255,255,255,0.85); }
+  .plan--feature .plan__price-val {
+    text-shadow: 0 0 30px rgba(255,180,205,0.35);
+  }
+  /* вспышка ценника в момент окончания счёта */
+  .plan__price-val.count-pop {
+    animation: pricePop .6s cubic-bezier(.2,.9,.3,1);
+  }
+  @keyframes pricePop {
+    0%   { transform: scale(1);    text-shadow: 0 0 0 rgba(255,180,205,0); }
+    40%  { transform: scale(1.12); text-shadow: 0 0 34px rgba(255,180,205,0.7); }
+    100% { transform: scale(1);    text-shadow: 0 0 26px rgba(255,180,205,0.25); }
+  }
+  .plan__price-val.is-soft { font-size: 27px; color: rgba(255,255,255,0.9); }
+  .plan__price-old {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.35);
+    text-decoration: line-through;
+    text-decoration-color: rgba(255,140,160,0.7);
+  }
   .plan__price-note {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
   }
+  .plan__save {
+    align-self: flex-start;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #ffd2dc;
+    border: 1px solid rgba(255,200,215,0.35);
+    background: rgba(255,200,215,0.06);
+    padding: 3px 9px;
+    border-radius: 100px;
+    margin-top: 2px;
+  }
 
-  .plan__list {
+  /* список фич с подзаголовками-категориями */
+  .plan__features {
     list-style: none;
+    margin: 0 0 22px;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 13px;
-    margin: 0 0 28px;
+    gap: 12px;
     flex: 1;
   }
-  .plan__list li {
+  .plan__features .plan__cat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 6px;
+  }
+  .plan__features li:not(.plan__cat) {
     position: relative;
     padding-left: 28px;
-    font-size: 15px;
+    font-size: 14.5px;
     line-height: 1.4;
-    color: rgba(255,255,255,0.78);
+    color: rgba(255,255,255,0.8);
   }
-  .plan__list li::before {
+  .plan__features li:not(.plan__cat)::before {
     content: '';
     position: absolute;
-    left: 0; top: 3px;
-    width: 16px; height: 16px;
+    left: 0; top: 1px;
+    width: 18px; height: 18px;
     border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(255,255,255,0.25);
     background:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/9px no-repeat;
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/10px no-repeat;
   }
-  .plan__list li b { color: var(--text); font-weight: 700; }
+  .plan--feature .plan__features li:not(.plan__cat)::before {
+    border-color: rgba(255,200,215,0.5);
+    background:
+      rgba(255,200,215,0.1)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffd2dc' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/10px no-repeat;
+    box-shadow: 0 0 10px rgba(255,180,205,0.2);
+  }
+  .plan__features li b { color: var(--text); font-weight: 700; }
+  .plan--feature .plan__features li b { color: #ffe0e7; }
 
-  /* поочерёдное мягкое проявление пунктов при появлении карточки */
-  .plan.reveal .plan__list li {
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1);
+  /* бонус-плашка */
+  .plan__bonus {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 13px 15px;
+    margin-bottom: 22px;
+    border-radius: 14px;
+    border: 1px dashed rgba(255,200,215,0.35);
+    background: rgba(255,200,215,0.05);
+    font-size: 13px;
+    line-height: 1.4;
+    color: #f0d6dd;
   }
-  .plan.reveal.in .plan__list li { opacity: 1; transform: translateY(0); }
-  .plan.reveal.in .plan__list li:nth-child(1) { transition-delay: .15s; }
-  .plan.reveal.in .plan__list li:nth-child(2) { transition-delay: .23s; }
-  .plan.reveal.in .plan__list li:nth-child(3) { transition-delay: .31s; }
-  .plan.reveal.in .plan__list li:nth-child(4) { transition-delay: .39s; }
-  .plan.reveal.in .plan__list li:nth-child(5) { transition-delay: .47s; }
+  .plan__bonus svg { width: 17px; height: 17px; flex-shrink: 0; color: #ffd2dc; margin-top: 1px; }
+  .plan__bonus b { color: #fff; font-weight: 700; }
 
   .plan .btn {
     width: 100%;
     justify-content: center;
     font-size: 15px;
-    padding: 16px 24px;
+    padding: 17px 24px;
+  }
+  .plan--feature .btn {
+    background: linear-gradient(100deg, #ffffff, #ffe3ea 60%, #ffffff);
+    color: #1a0e12;
+    border-color: transparent;
+    box-shadow: 0 0 30px rgba(255,180,205,0.35);
+  }
+  .plan--feature .btn:hover {
+    box-shadow: 0 0 44px rgba(255,180,205,0.55), 0 0 70px rgba(255,180,205,0.2);
   }
 
-  .pricing__foot {
-    margin-top: 48px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
+  .plan__foot {
+    margin-top: 14px;
     text-align: center;
-  }
-  .pricing__foot-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.22em;
+    font-size: 10px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
   }
-  .pricing__foot-btn {
-    background: rgba(255,255,255,0.03);
-    color: var(--text);
-    border-color: rgba(255,255,255,0.16);
-    font-size: 16px;
-    padding: 18px 34px;
+
+  /* появление пунктов */
+  .plan.reveal .plan__features li {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .55s ease, transform .55s cubic-bezier(.2,.8,.2,1);
   }
-  .pricing__foot-btn:hover {
-    background: var(--text);
-    color: #0a0a0a;
-    border-color: var(--text);
-    box-shadow: 0 0 30px rgba(255,255,255,0.28), 0 0 60px rgba(255,255,255,0.1);
+  .plan.reveal.in .plan__features li { opacity: 1; transform: translateY(0); }
+  .plan.reveal.in .plan__features li:nth-child(1) { transition-delay: .10s; }
+  .plan.reveal.in .plan__features li:nth-child(2) { transition-delay: .15s; }
+  .plan.reveal.in .plan__features li:nth-child(3) { transition-delay: .20s; }
+  .plan.reveal.in .plan__features li:nth-child(4) { transition-delay: .25s; }
+  .plan.reveal.in .plan__features li:nth-child(5) { transition-delay: .30s; }
+  .plan.reveal.in .plan__features li:nth-child(6) { transition-delay: .35s; }
+  .plan.reveal.in .plan__features li:nth-child(7) { transition-delay: .40s; }
+  .plan.reveal.in .plan__features li:nth-child(8) { transition-delay: .45s; }
+
+  .pricing__cta {
+    margin-top: 54px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: 620px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px 24px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,200,215,0.2);
+    background:
+      radial-gradient(120% 140% at 0% 0%, rgba(255,200,215,0.08), transparent 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0) 70%),
+      #0c0c0c;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    transition: border-color .4s ease, transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease;
+  }
+  .pricing__cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 35%, rgba(255,210,222,0.14) 50%, transparent 65%);
+    transform: translateX(-120%);
+    transition: transform .9s cubic-bezier(.2,.8,.2,1);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .pricing__cta:hover {
+    border-color: rgba(255,200,215,0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 50px rgba(0,0,0,0.45), 0 0 40px rgba(255,180,205,0.15);
+  }
+  .pricing__cta:hover::before { transform: translateX(120%); }
+  .pricing__cta > * { position: relative; z-index: 1; }
+
+  .pricing__cta-icon {
+    flex-shrink: 0;
+    width: 46px; height: 46px;
+    border-radius: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a0e12;
+    background: linear-gradient(135deg, #ffe3ea, #ffc4d4);
+    box-shadow: 0 0 22px rgba(255,180,205,0.45);
+    transition: transform .45s cubic-bezier(.4,1.4,.4,1);
+  }
+  .pricing__cta-icon svg { width: 22px; height: 22px; }
+  .pricing__cta:hover .pricing__cta-icon { transform: rotate(-8deg) scale(1.06); }
+
+  .pricing__cta-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+  }
+  .pricing__cta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #d9a8b6;
+  }
+  .pricing__cta-title {
+    font-family: 'Bricolage Grotesque', 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: clamp(16px, 2vw, 19px);
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    color: var(--text);
   }
 
-  /* ----- планшет: одна колонка по центру ----- */
+  .pricing__cta-arrow {
+    flex-shrink: 0;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,200,215,0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    transition: background .35s ease, border-color .35s ease, transform .45s cubic-bezier(.2,.8,.2,1), color .3s ease;
+  }
+  .pricing__cta-arrow svg { width: 19px; height: 19px; }
+  .pricing__cta:hover .pricing__cta-arrow {
+    background: linear-gradient(135deg, #ffe3ea, #ffc4d4);
+    border-color: transparent;
+    color: #1a0e12;
+    transform: translateX(4px);
+    box-shadow: 0 0 22px rgba(255,180,205,0.5);
+  }
+
+  /* ----- планшет ----- */
   @media (max-width: 980px) {
     .pricing__lead { margin-bottom: 40px; }
+    .plan__for { min-height: 0; }
+    .plan--feature { margin: 0; }
   }
 
   /* ----- телефон ----- */
   @media (max-width: 540px) {
-    .pricing__lead {
-      font-size: 16px;
-      margin-bottom: 30px;
-    }
-    .pricing__grid { gap: 14px; max-width: 100%; }
-    .plan { padding: 24px 20px; border-radius: 18px; }
-    .plan::after { left: 20px; right: 20px; }
-    .plan__name { font-size: 22px; margin: 6px 0 4px; }
-    .plan__price { margin: 18px 0 20px; padding-bottom: 18px; }
-    .plan__price-val { font-size: 32px; }
-    .plan__price-val.is-soft { font-size: 23px; }
-    .plan__list { gap: 11px; margin-bottom: 24px; }
-    .plan__list li { font-size: 14.5px; padding-left: 26px; }
-    .plan .btn { font-size: 15px; padding: 15px 20px; }
-    .plan__tag { top: 14px; right: 14px; font-size: 9px; padding: 4px 9px; }
+    .pricing__lead { font-size: 16px; margin-bottom: 30px; }
+    .pricing__grid { gap: 16px; max-width: 100%; }
+    .plan { padding: 26px 20px 24px; border-radius: 20px; }
+    .plan__name { font-size: 24px; }
+    .plan__price-val { font-size: 36px; }
+    .plan__price-val.is-soft { font-size: 24px; }
+    .plan__features li:not(.plan__cat) { font-size: 14px; padding-left: 26px; }
+    .plan .btn { font-size: 15px; padding: 16px 20px; }
+    .plan__icon { width: 42px; height: 42px; }
 
-    .pricing__foot { margin-top: 36px; gap: 14px; }
-    .pricing__foot-label { font-size: 10px; letter-spacing: 0.18em; }
-    .pricing__foot-btn {
-      font-size: 14px;
-      padding: 16px 22px;
-      width: 100%;
-      max-width: 380px;
-      text-align: center;
-      line-height: 1.3;
+    .pricing__cta {
+      margin-top: 40px;
+      gap: 14px;
+      padding: 16px 16px;
+      border-radius: 16px;
+    }
+    .pricing__cta-icon { width: 40px; height: 40px; border-radius: 11px; }
+    .pricing__cta-icon svg { width: 19px; height: 19px; }
+    .pricing__cta-label { font-size: 9.5px; letter-spacing: 0.16em; }
+    .pricing__cta-title { font-size: 15px; }
+    .pricing__cta-arrow { width: 38px; height: 38px; }
+  }
+
+  /* ----- тач: гасим hover-приподнимание ----- */
+  @media (hover: none) {
+    .plan:hover { transform: none; box-shadow: none; border-color: rgba(255,255,255,0.08); }
+    .plan:hover::before { opacity: .5; }
+    .plan--feature:hover {
+      box-shadow: 0 22px 60px rgba(0,0,0,0.5), 0 0 50px rgba(255,180,205,0.12);
+    }
+    .pricing__cta:active {
+      border-color: rgba(255,200,215,0.5);
+    }
+    .pricing__cta:active .pricing__cta-arrow {
+      background: linear-gradient(135deg, #ffe3ea, #ffc4d4);
+      border-color: transparent; color: #1a0e12;
     }
   }
 
-  /* ----- тач-устройства: гасим hover-приподнимание (оно дёргает на тапе) ----- */
-  @media (hover: none) {
-    .plan:hover {
-      transform: none;
-      border-color: rgba(255,255,255,0.07);
-      box-shadow: none;
-    }
-    .plan--feature:hover {
-      border-color: rgba(255,255,255,0.28);
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.06) inset, 0 18px 50px rgba(0,0,0,0.45);
-    }
-    .plan:hover::after { transform: scaleX(0); }
-    .plan--feature:hover::after { transform: scaleX(1); }
-    .pricing__foot-btn:active {
-      background: var(--text);
-      color: #0a0a0a;
-      border-color: var(--text);
-    }
+  @media (prefers-reduced-motion: reduce) {
+    .plan--feature::after { animation: none; }
+    .plan__tag::before { animation: none; }
   }
 
   /* ---------- CONTACT ---------- */
@@ -2707,9 +3037,9 @@
       <a href="#evolution" class="topbar__link">2.0</a>
       <a href="#program" class="topbar__link">Программа</a>
       <a href="#cases" class="topbar__link">Кейсы</a>
-      <a href="#pricing" class="topbar__link">Тарифы</a>
       <a href="#founder" class="topbar__link">Создатель</a>
       <a href="#faq" class="topbar__link">FAQ</a>
+      <a href="#pricing" class="topbar__link">Тарифы</a>
       <a href="#contact" class="topbar__link">Войти</a>
     </nav>
 
@@ -2724,9 +3054,9 @@
     <li><a href="#evolution" class="menu__item"><span class="menu__num">01</span><span>2.0</span></a></li>
     <li><a href="#program" class="menu__item"><span class="menu__num">02</span><span>Программа</span></a></li>
     <li><a href="#cases" class="menu__item"><span class="menu__num">03</span><span>Кейсы</span></a></li>
-    <li><a href="#pricing" class="menu__item"><span class="menu__num">04</span><span>Тарифы</span></a></li>
-    <li><a href="#founder" class="menu__item"><span class="menu__num">05</span><span>Создатель</span></a></li>
-    <li><a href="#faq" class="menu__item"><span class="menu__num">06</span><span>FAQ</span></a></li>
+    <li><a href="#founder" class="menu__item"><span class="menu__num">04</span><span>Создатель</span></a></li>
+    <li><a href="#faq" class="menu__item"><span class="menu__num">05</span><span>FAQ</span></a></li>
+    <li><a href="#pricing" class="menu__item"><span class="menu__num">06</span><span>Тарифы</span></a></li>
     <li><a href="#contact" class="menu__item"><span class="menu__num">→</span><span>Войти</span></a></li>
   </ul>
 </div>
@@ -2774,9 +3104,9 @@
       </div>
 
       <div class="hero__cta">
-        <a href="https://t.me/fedonko" target="_blank" rel="noopener" class="btn">
-          Войти в Wake Up Empire 2.0
-          <span class="btn__arrow">↗</span>
+        <a href="#pricing" class="btn">
+          Перейти к тарифам
+          <span class="btn__arrow">↓</span>
         </a>
         <a href="#program" class="btn btn--ghost">
           Что внутри
@@ -3296,6 +3626,17 @@
 </section>
 
 <section class="section" id="pricing">
+  <div class="pricing__bg" aria-hidden="true">
+    <div class="pricing__bg-grid"></div>
+    <div class="pricing__bg-glow pricing__bg-glow--1"></div>
+    <div class="pricing__bg-glow pricing__bg-glow--2"></div>
+    <div class="pricing__bg-beams">
+      <span class="pricing__beam"></span>
+      <span class="pricing__beam"></span>
+      <span class="pricing__beam"></span>
+    </div>
+    <div class="pricing__bg-kanji">道</div>
+  </div>
   <div class="container">
     <div class="section__head">
       <span class="section__kicker">тарифы · season 02</span>
@@ -3303,94 +3644,125 @@
     </div>
 
     <p class="pricing__lead reveal">
-      Три формата участия. От доступа в коммьюнити навсегда до индивидуальной работы один на один. Средний срок окупаемости — 2–4 недели.
+      Три формата участия — от <b>входа в коммьюнити навсегда</b> до <span class="sakura-word">личной работы один на один</span>. Средний срок окупаемости — 2–4 недели.
     </p>
 
     <div class="pricing__grid">
 
-      <article class="plan reveal">
-        <div class="plan__head">
-          <span class="plan__num">01</span>
+      <article class="plan plan--start reveal">
+        <div class="plan__top">
+          <span class="plan__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </span>
         </div>
-        <h3 class="plan__name">Wake Up Empire</h3>
-        <span class="plan__term">доступ навсегда</span>
+        <h3 class="plan__name">Empire · 3 месяца</h3>
+        <p class="plan__for">Тот же доступ, но с <b>фокусом на результат</b> за 90 дней под присмотром.</p>
 
         <div class="plan__price">
-          <span class="plan__price-val is-soft">по запросу</span>
-          <span class="plan__price-note">в личке</span>
+          <div class="plan__price-row">
+            <span class="plan__price-val is-soft">по запросу</span>
+            <span class="plan__price-note">цена в личке</span>
+          </div>
         </div>
 
-        <ul class="plan__list">
-          <li>Коммьюнити молодых гениев</li>
+        <ul class="plan__features">
+          <li class="plan__cat">что входит</li>
+          <li>Коммьюнити <b>молодых гениев</b></li>
           <li>Эфиры и разборы</li>
           <li>Открытый ЛС Федонко для вопросов</li>
           <li>Более <b>50 рабочих гайдов</b></li>
-          <li>Средний срок окупаемости <b>2–4 недели</b></li>
+          <li><b>Сопровождение 3 месяца</b> до первых денег</li>
         </ul>
 
         <a href="https://t.me/fedonko" target="_blank" rel="noopener" class="btn btn--ghost">
           Узнать цену <span class="btn__arrow">↗</span>
         </a>
+        <div class="plan__foot">окупаемость 2–4 недели</div>
       </article>
 
-      <article class="plan plan--feature reveal delay-1">
-        <span class="plan__tag">популярный</span>
-        <div class="plan__head">
-          <span class="plan__num">02</span>
+      <article class="plan plan--feature plan--core reveal delay-1">
+        <div class="plan__top">
+          <span class="plan__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+          </span>
+          <span class="plan__tag">выбор большинства</span>
         </div>
         <h3 class="plan__name">Wake Up Empire</h3>
-        <span class="plan__term">3 месяца</span>
+        <p class="plan__for">Для тех, кто хочет <b>зайти и остаться</b>: полный доступ к системе без срока.</p>
 
         <div class="plan__price">
-          <span class="plan__price-val is-soft">по запросу</span>
-          <span class="plan__price-note">в личке</span>
+          <div class="plan__price-row">
+            <span class="plan__price-val is-soft">по запросу</span>
+            <span class="plan__price-note">цена в личке</span>
+          </div>
+          <span class="plan__save">доступ навсегда — лучшая цена сезона</span>
         </div>
 
-        <ul class="plan__list">
-          <li>Коммьюнити молодых гениев</li>
+        <ul class="plan__features">
+          <li class="plan__cat">что входит</li>
+          <li>Коммьюнити <b>молодых гениев</b></li>
           <li>Эфиры и разборы</li>
           <li>Открытый ЛС Федонко для вопросов</li>
           <li>Более <b>50 рабочих гайдов</b></li>
-          <li>Средний срок окупаемости <b>2–4 недели</b></li>
+          <li><b>Доступ навсегда</b> — без ограничений по сроку</li>
         </ul>
 
         <a href="https://t.me/fedonko" target="_blank" rel="noopener" class="btn">
-          Войти <span class="btn__arrow">↗</span>
+          Войти в Empire <span class="btn__arrow">↗</span>
         </a>
+        <div class="plan__foot">окупаемость 2–4 недели</div>
       </article>
 
-      <article class="plan reveal delay-2">
-        <div class="plan__head">
-          <span class="plan__num">03</span>
+      <article class="plan plan--pro reveal delay-2">
+        <div class="plan__top">
+          <span class="plan__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3c0 1.5.5 2 .5 3H14.5c0-1 .5-1.5.5-3a3 3 0 0 0-3-3z"/><path d="M9.5 11h5"/><path d="M9 14h6"/><path d="M10 17h4"/></svg>
+          </span>
         </div>
         <h3 class="plan__name">Empire + Консультация</h3>
-        <span class="plan__term">индивидуально</span>
+        <p class="plan__for">Максимум: <b>личная работа</b> с Федонко и готовая бизнес-модель под тебя.</p>
 
         <div class="plan__price">
-          <span class="plan__price-val">18 990 ₽</span>
+          <div class="plan__price-row">
+            <span class="plan__price-val" data-count="18990" data-suffix=" ₽">18 990 ₽</span>
+            <span class="plan__price-old">29 990 ₽</span>
+          </div>
+          <span class="plan__save">−37% · индивидуальный формат</span>
         </div>
 
-        <ul class="plan__list">
+        <ul class="plan__features">
+          <li class="plan__cat">что входит</li>
           <li>Полный разбор ситуации <b>индивидуально</b></li>
           <li>Выбираем нишу и строим с неё план</li>
-          <li>Делаем <b>твою</b> бизнес-модель</li>
-          <li>Созвон на <b>3 часа</b></li>
+          <li>Собираем <b>твою бизнес-модель</b> с нуля</li>
+          <li>Личный созвон <b>на 3 часа</b></li>
         </ul>
+
+        <div class="plan__bonus">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>Входит <b>полный доступ к Wake Up Empire</b> навсегда.</span>
+        </div>
 
         <a href="https://t.me/fedonko" target="_blank" rel="noopener" class="btn btn--ghost">
           Забрать место <span class="btn__arrow">↗</span>
         </a>
+        <div class="plan__foot">мест в потоке ограничено</div>
       </article>
 
     </div>
 
-    <div class="pricing__foot reveal">
-      <span class="pricing__foot-label">Нужны другие условия?</span>
-      <a href="https://t.me/fedonko" target="_blank" rel="noopener" class="btn pricing__foot-btn">
-        За индивидуальными условиями — жми сюда
-        <span class="btn__arrow">↗</span>
-      </a>
-    </div>
+    <a href="https://t.me/fedonko" target="_blank" rel="noopener" class="pricing__cta reveal">
+      <span class="pricing__cta-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.426 2.574 2.43 9.9c-1.296.5-1.288 1.214-.236 1.535l4.872 1.52 1.876 5.747c.227.628.345.95.681.95.255 0 .388-.118.553-.27l2.396-2.319 4.978 3.677c.916.504 1.575.243 1.803-.85L21.6 4.013c.336-1.34-.503-1.949-1.376-1.553z"/></svg>
+      </span>
+      <span class="pricing__cta-text">
+        <span class="pricing__cta-label">Нужны другие условия?</span>
+        <span class="pricing__cta-title">За индивидуальными условиями — жми сюда</span>
+      </span>
+      <span class="pricing__cta-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+      </span>
+    </a>
   </div>
 </section>
 
@@ -3473,6 +3845,11 @@
         const val = Math.round(target * easeOutExpo(p));
         el.textContent = prefix + nf.format(val) + suffix;
         if (p < 1) requestAnimationFrame(tick);
+        else if (el.classList.contains('plan__price-val')) {
+          // финальная вспышка для ценника тарифа
+          el.classList.add('count-pop');
+          el.addEventListener('animationend', () => el.classList.remove('count-pop'), { once: true });
+        }
       };
       requestAnimationFrame(tick);
     };
