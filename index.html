@@ -1099,80 +1099,6 @@
     .track__row.is-open .track__chevron::after { background: #0a0a0a; }
   }
 
-  /* ---------- EVOLUTION (1.0 → 2.0) ---------- */
-  .evo {
-    position: relative;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0) 60%),
-      #0c0c0c;
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 26px;
-    padding: 40px;
-    overflow: hidden;
-    isolation: isolate;
-  }
-  .evo::before {
-    content: '2.0';
-    position: absolute;
-    top: 24px;
-    right: 32px;
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-weight: 800;
-    font-size: clamp(110px, 14vw, 220px);
-    line-height: 1;
-    color: rgba(255,255,255,0.035);
-    letter-spacing: -0.05em;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .evo > * { position: relative; z-index: 1; }
-
-  .evo__story {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 28px;
-    margin-bottom: 38px;
-    max-width: 920px;
-  }
-  @media (max-width: 820px) { .evo__story { grid-template-columns: 1fr; gap: 20px; } }
-
-  .evo__lead {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: clamp(16px, 1.7vw, 18px);
-    line-height: 1.55;
-    letter-spacing: -0.005em;
-    color: #b8b8b8;
-    font-weight: 500;
-  }
-  .evo__lead strong { color: var(--text); font-weight: 700; }
-  .evo__lead--accent { color: #d8d8d8; }
-  .evo__lead--accent strong { color: var(--text); }
-
-  .evo__chip {
-    display: inline-block;
-    margin-right: 10px;
-    margin-bottom: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    padding: 5px 10px;
-    border-radius: 100px;
-    border: 1px solid rgba(255,255,255,0.10);
-    background: rgba(255,255,255,0.02);
-    color: var(--muted);
-    vertical-align: 2px;
-  }
-  .evo__chip--white {
-    background: var(--text);
-    color: #0a0a0a;
-    border-color: var(--text);
-    box-shadow: 0 0 14px rgba(255,255,255,0.25);
-  }
-
-  @media (max-width: 640px) {
-    .evo { padding: 28px 22px; }
-  }
 
   /* ---------- CASES (3 slots, в стилистике pillars) ---------- */
   .cases__lead,
@@ -2215,6 +2141,338 @@
     .founder__photo:hover img { transform: none; }
   }
 
+  /* ---------- CHARITY (благотворительность) ---------- */
+  :root {
+    --ch: #48c774;
+    --ch-dim: rgba(72,199,116,0.45);
+    --ch-faint: rgba(72,199,116,0.10);
+    --ch-border: rgba(72,199,116,0.20);
+  }
+
+  .charity {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-top: 1px solid var(--line);
+    padding: 140px 0;
+    text-align: center;
+  }
+
+  /* канвас для плавающих частиц */
+  .charity__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* большой кандзи 善 (добро) как водяной знак */
+  .charity__kanji {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 800;
+    font-size: clamp(280px, 40vw, 520px);
+    line-height: 1;
+    color: transparent;
+    background: linear-gradient(180deg, rgba(72,199,116,0.06) 0%, rgba(72,199,116,0.02) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+    animation: chKanji 10s ease-in-out infinite;
+  }
+  @keyframes chKanji {
+    0%, 100% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+    50%       { opacity: .6; transform: translate(-50%,-50%) scale(1.04); }
+  }
+
+  /* зелёная черта сверху */
+  .charity__topline {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(72,199,116,0.45) 20%,
+      rgba(72,199,116,0.85) 50%,
+      rgba(72,199,116,0.45) 80%,
+      transparent 100%);
+    box-shadow: 0 0 24px rgba(72,199,116,0.4);
+    z-index: 2;
+  }
+
+  /* плавающие орбы */
+  .charity__orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .charity__orb--1 {
+    width: 480px; height: 480px;
+    left: -5%; top: -20%;
+    background: radial-gradient(circle, rgba(72,199,116,0.12), transparent 70%);
+    animation: chOrb1 12s ease-in-out infinite;
+  }
+  .charity__orb--2 {
+    width: 400px; height: 400px;
+    right: -8%; bottom: -15%;
+    background: radial-gradient(circle, rgba(72,199,116,0.09), transparent 70%);
+    animation: chOrb2 15s ease-in-out infinite;
+  }
+  .charity__orb--3 {
+    width: 300px; height: 300px;
+    left: 40%; top: 60%;
+    background: radial-gradient(circle, rgba(72,199,116,0.07), transparent 70%);
+    animation: chOrb3 10s ease-in-out infinite;
+  }
+  @keyframes chOrb1 {
+    0%, 100% { transform: translate(0,0); }
+    33%      { transform: translate(40px, 30px); }
+    66%      { transform: translate(-20px, 15px); }
+  }
+  @keyframes chOrb2 {
+    0%, 100% { transform: translate(0,0); }
+    40%      { transform: translate(-35px, -25px); }
+    70%      { transform: translate(15px, -40px); }
+  }
+  @keyframes chOrb3 {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50%      { transform: translate(30px, -30px) scale(1.15); }
+  }
+
+  .charity > .container { position: relative; z-index: 1; }
+
+  .charity__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* сердце-иконка сверху */
+  .charity__heart-wrap {
+    position: relative;
+    width: 86px; height: 86px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .charity__heart-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(72,199,116,0.3);
+  }
+  .charity__heart-ring--1 { animation: chRing 4s ease-out infinite; }
+  .charity__heart-ring--2 { animation: chRing 4s ease-out 1.3s infinite; }
+  .charity__heart-ring--3 { animation: chRing 4s ease-out 2.6s infinite; }
+  @keyframes chRing {
+    0%   { transform: scale(1); opacity: .7; }
+    100% { transform: scale(2.4); opacity: 0; }
+  }
+  .charity__heart-icon {
+    position: relative;
+    z-index: 1;
+    width: 86px; height: 86px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 40% 35%, rgba(72,199,116,0.22), transparent 70%),
+      rgba(10,10,10,0.85);
+    border: 1px solid rgba(72,199,116,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+      0 0 60px rgba(72,199,116,0.18),
+      0 0 120px rgba(72,199,116,0.06),
+      inset 0 0 30px rgba(72,199,116,0.08);
+    animation: chHeartGlow 3s ease-in-out infinite;
+  }
+  @keyframes chHeartGlow {
+    0%, 100% { box-shadow: 0 0 60px rgba(72,199,116,0.18), 0 0 120px rgba(72,199,116,0.06), inset 0 0 30px rgba(72,199,116,0.08); }
+    50%       { box-shadow: 0 0 90px rgba(72,199,116,0.35), 0 0 180px rgba(72,199,116,0.12), inset 0 0 50px rgba(72,199,116,0.15); }
+  }
+  .charity__heart-icon svg {
+    width: 32px; height: 32px;
+    color: var(--ch);
+    filter: drop-shadow(0 0 10px rgba(72,199,116,0.7));
+    animation: chBeat 2s ease-in-out infinite;
+  }
+  @keyframes chBeat {
+    0%, 100% { transform: scale(1); }
+    14%       { transform: scale(1.22); }
+    28%       { transform: scale(1); }
+    42%       { transform: scale(1.12); }
+    56%       { transform: scale(1); }
+  }
+
+  .charity__kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--ch-dim);
+  }
+  .charity__kicker::before,
+  .charity__kicker::after {
+    content: '';
+    width: 28px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ch-dim));
+    flex-shrink: 0;
+  }
+  .charity__kicker::after {
+    background: linear-gradient(90deg, var(--ch-dim), transparent);
+  }
+
+  .charity__headline {
+    font-family: 'Bricolage Grotesque', 'Manrope', sans-serif;
+    font-size: clamp(36px, 5vw, 72px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--text);
+  }
+  .charity__headline .ch-acc {
+    display: block;
+    margin-top: 8px;
+    color: var(--ch);
+    text-shadow: 0 0 40px rgba(72,199,116,0.45);
+  }
+
+  .charity__desc {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: clamp(16px, 1.7vw, 19px);
+    color: #aaa;
+    line-height: 1.6;
+    letter-spacing: -0.005em;
+    max-width: 580px;
+  }
+  .charity__desc strong { color: var(--text); font-weight: 600; }
+
+  /* стеклянная карточка с тремя метриками */
+  .charity__card {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(72,199,116,0.10);
+    border: 1px solid rgba(72,199,116,0.20);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow:
+      0 24px 60px rgba(0,0,0,0.45),
+      0 0 80px rgba(72,199,116,0.08),
+      inset 0 1px 0 rgba(72,199,116,0.12);
+    transition: border-color .4s ease, box-shadow .4s ease;
+  }
+  .charity__card:hover {
+    border-color: rgba(72,199,116,0.40);
+    box-shadow:
+      0 32px 80px rgba(0,0,0,0.55),
+      0 0 120px rgba(72,199,116,0.16),
+      inset 0 1px 0 rgba(72,199,116,0.18);
+  }
+  /* shine при hover */
+  .charity__card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 30%, rgba(72,199,116,0.12) 50%, transparent 70%);
+    transform: translateX(-110%);
+    transition: transform 1.2s cubic-bezier(.2,.8,.2,1);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .charity__card:hover::before { transform: translateX(120%); }
+
+  .charity__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 36px 20px;
+    background:
+      linear-gradient(180deg, rgba(72,199,116,0.04), rgba(72,199,116,0) 70%),
+      rgba(10,10,10,0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    position: relative;
+    z-index: 1;
+    transition: background .35s ease;
+  }
+  .charity__card:hover .charity__stat {
+    background:
+      linear-gradient(180deg, rgba(72,199,116,0.07), rgba(72,199,116,0) 70%),
+      rgba(10,10,10,0.8);
+  }
+  .charity__stat-icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: var(--ch-faint);
+    border: 1px solid var(--ch-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+  .charity__stat-icon svg {
+    width: 18px; height: 18px;
+    color: var(--ch);
+    filter: drop-shadow(0 0 5px rgba(72,199,116,0.5));
+  }
+  .charity__stat-value {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 3.2vw, 42px);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--ch);
+    text-shadow: 0 0 28px rgba(72,199,116,0.5);
+  }
+  .charity__stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ch-dim);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  /* нижний текст */
+  .charity__footer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: rgba(72,199,116,0.35);
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 640px) {
+    .charity { padding: 90px 0; }
+    .charity__card { grid-template-columns: 1fr; border-radius: 18px; }
+    .charity__stat { padding: 26px 20px; }
+    .charity__headline { font-size: 32px; }
+    .charity__heart-wrap { width: 70px; height: 70px; }
+    .charity__heart-icon { width: 70px; height: 70px; }
+    .charity__heart-icon svg { width: 26px; height: 26px; }
+  }
+
   /* ---------- PRICING (тарифы) ---------- */
   #pricing { position: relative; overflow: hidden; isolation: isolate; }
 
@@ -2567,6 +2825,33 @@
     padding: 3px 9px;
     border-radius: 100px;
     margin-top: 2px;
+  }
+
+  /* зелёный чип благотворительности на тарифах */
+  .plan__charity {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(72, 199, 116, 0.9);
+    border: 1px solid rgba(72, 199, 116, 0.32);
+    background: rgba(72, 199, 116, 0.06);
+    padding: 3px 9px;
+    border-radius: 100px;
+    margin-top: 4px;
+  }
+  .plan__charity::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(72, 199, 116, 0.8);
+    box-shadow: 0 0 7px rgba(72, 199, 116, 0.6);
+    flex-shrink: 0;
+    animation: chIconPulse 2.8s ease-in-out infinite;
   }
 
   /* список фич с подзаголовками-категориями */
@@ -3034,11 +3319,11 @@
 <header class="topbar" id="topbar">
   <div class="topbar__inner">
     <nav class="topbar__nav" id="topNav" aria-label="Разделы">
-      <a href="#evolution" class="topbar__link">2.0</a>
       <a href="#program" class="topbar__link">Программа</a>
       <a href="#cases" class="topbar__link">Кейсы</a>
       <a href="#founder" class="topbar__link">Создатель</a>
       <a href="#faq" class="topbar__link">FAQ</a>
+      <a href="#charity" class="topbar__link">Благотворительность</a>
       <a href="#pricing" class="topbar__link">Тарифы</a>
       <a href="#contact" class="topbar__link">Войти</a>
     </nav>
@@ -3051,11 +3336,11 @@
 
 <div class="menu" id="menu" aria-hidden="true">
   <ul class="menu__list">
-    <li><a href="#evolution" class="menu__item"><span class="menu__num">01</span><span>2.0</span></a></li>
-    <li><a href="#program" class="menu__item"><span class="menu__num">02</span><span>Программа</span></a></li>
-    <li><a href="#cases" class="menu__item"><span class="menu__num">03</span><span>Кейсы</span></a></li>
-    <li><a href="#founder" class="menu__item"><span class="menu__num">04</span><span>Создатель</span></a></li>
-    <li><a href="#faq" class="menu__item"><span class="menu__num">05</span><span>FAQ</span></a></li>
+    <li><a href="#program" class="menu__item"><span class="menu__num">01</span><span>Программа</span></a></li>
+    <li><a href="#cases" class="menu__item"><span class="menu__num">02</span><span>Кейсы</span></a></li>
+    <li><a href="#founder" class="menu__item"><span class="menu__num">03</span><span>Создатель</span></a></li>
+    <li><a href="#faq" class="menu__item"><span class="menu__num">04</span><span>FAQ</span></a></li>
+    <li><a href="#charity" class="menu__item"><span class="menu__num">05</span><span>Благотворительность</span></a></li>
     <li><a href="#pricing" class="menu__item"><span class="menu__num">06</span><span>Тарифы</span></a></li>
     <li><a href="#contact" class="menu__item"><span class="menu__num">→</span><span>Войти</span></a></li>
   </ul>
@@ -3118,27 +3403,6 @@
 </header>
 
 
-<section class="section" id="evolution">
-  <div class="container">
-    <div class="section__head">
-      <span class="section__kicker">evolution · 1.0 → 2.0</span>
-      <h2 class="section__title">От Wake Up<br>к Empire 2.0</h2>
-    </div>
-
-    <div class="evo reveal">
-      <div class="evo__story">
-        <p class="evo__lead">
-          <span class="evo__chip">Wake Up · v1</span>
-          Wake Up 1.0 был сборником гайдов от <strong>Артёма Федонко (Fedonko)</strong> — всё, до чего он дошёл сам: как мыслить, как строить продукт, как продавать, как не сливаться. Люди брали это и <strong>выходили на сотни тысяч рублей в месяц</strong> — потому что наконец-то делали.
-        </p>
-        <p class="evo__lead evo__lead--accent">
-          <span class="evo__chip evo__chip--white">Empire · v2</span>
-          2.0 — это обновленные гайды, огромное сообщество амбициозных ребят и всё то, что выведет тебя на первые деньги быстрее, качественнее, лучше и эффективнее.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section class="section" id="program">
   <div class="container">
@@ -3625,6 +3889,73 @@
   </div>
 </section>
 
+<section class="charity" id="charity" aria-label="Благотворительность">
+  <div class="charity__topline" aria-hidden="true"></div>
+  <div class="charity__kanji" aria-hidden="true">善</div>
+  <div class="charity__orb charity__orb--1" aria-hidden="true"></div>
+  <div class="charity__orb charity__orb--2" aria-hidden="true"></div>
+  <div class="charity__orb charity__orb--3" aria-hidden="true"></div>
+  <canvas class="charity__canvas" aria-hidden="true"></canvas>
+
+  <div class="container">
+    <div class="charity__content">
+
+      <!-- пульсирующее сердце -->
+      <div class="charity__heart-wrap reveal" aria-hidden="true">
+        <div class="charity__heart-ring charity__heart-ring--1"></div>
+        <div class="charity__heart-ring charity__heart-ring--2"></div>
+        <div class="charity__heart-ring charity__heart-ring--3"></div>
+        <div class="charity__heart-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/>
+          </svg>
+        </div>
+      </div>
+
+      <span class="charity__kicker reveal">благотворительность · tooba</span>
+
+      <h2 class="charity__headline reveal">
+        Строишь империю —
+        <span class="ch-acc">меняешь чью-то жизнь</span>
+      </h2>
+
+      <p class="charity__desc reveal">
+        <strong>10% от каждой покупки</strong> идут детям через благотворительный фонд Tooba.
+        Каждая сделка здесь — это не просто шаг к твоей цели,
+        это реальная помощь тому, кому она нужна больше всего.
+      </p>
+
+      <!-- карточка с тремя метриками -->
+      <div class="charity__card reveal delay-1">
+        <div class="charity__stat">
+          <div class="charity__stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          </div>
+          <span class="charity__stat-value">10%</span>
+          <span class="charity__stat-label">от каждой<br>покупки</span>
+        </div>
+        <div class="charity__stat">
+          <div class="charity__stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <span class="charity__stat-value">Tooba</span>
+          <span class="charity__stat-label">фонд помощи<br>детям</span>
+        </div>
+        <div class="charity__stat">
+          <div class="charity__stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          </div>
+          <span class="charity__stat-value">∞</span>
+          <span class="charity__stat-label">твой рост =<br>их будущее</span>
+        </div>
+      </div>
+
+      <span class="charity__footer reveal delay-2">善 · добро возвращается</span>
+
+    </div>
+  </div>
+</section>
+
 <section class="section" id="pricing">
   <div class="pricing__bg" aria-hidden="true">
     <div class="pricing__bg-grid"></div>
@@ -3664,6 +3995,7 @@
             <span class="plan__price-note">цена в личке</span>
           </div>
         </div>
+        <span class="plan__charity">10% · на благотворительность</span>
 
         <ul class="plan__features">
           <li class="plan__cat">что входит</li>
@@ -3697,6 +4029,7 @@
           </div>
           <span class="plan__save">доступ навсегда — лучшая цена сезона</span>
         </div>
+        <span class="plan__charity">10% · на благотворительность</span>
 
         <ul class="plan__features">
           <li class="plan__cat">что входит</li>
@@ -3729,6 +4062,7 @@
           </div>
           <span class="plan__save">−37% · индивидуальный формат</span>
         </div>
+        <span class="plan__charity">10% · на благотворительность</span>
 
         <ul class="plan__features">
           <li class="plan__cat">что входит</li>
@@ -4374,6 +4708,71 @@
     }
     requestAnimationFrame(loop);
   })();
+</script>
+
+<script>
+(function(){
+  const cv = document.querySelector('.charity__canvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  let w, h, dots = [];
+
+  function resize() {
+    const s = cv.parentElement;
+    w = cv.width = s.offsetWidth;
+    h = cv.height = s.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 40; i++) {
+    dots.push({
+      x: Math.random() * 2000,
+      y: Math.random() * 1200,
+      r: Math.random() * 2.2 + 0.6,
+      dx: (Math.random() - 0.5) * 0.3,
+      dy: (Math.random() - 0.5) * 0.3,
+      o: Math.random() * 0.5 + 0.15
+    });
+  }
+
+  let paused = true;
+  const obs = new IntersectionObserver(([e]) => { paused = !e.isIntersecting; }, { threshold: 0.05 });
+  obs.observe(cv.parentElement);
+
+  function frame() {
+    requestAnimationFrame(frame);
+    if (paused) return;
+    ctx.clearRect(0, 0, w, h);
+    for (const d of dots) {
+      d.x += d.dx; d.y += d.dy;
+      if (d.x < 0) d.x = w; if (d.x > w) d.x = 0;
+      if (d.y < 0) d.y = h; if (d.y > h) d.y = 0;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(72,199,116,${d.o})`;
+      ctx.shadowColor = 'rgba(72,199,116,0.6)';
+      ctx.shadowBlur = 8;
+      ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+    for (let i = 0; i < dots.length; i++) {
+      for (let j = i + 1; j < dots.length; j++) {
+        const dx = dots[i].x - dots[j].x, dy = dots[i].y - dots[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(dots[i].x, dots[i].y);
+          ctx.lineTo(dots[j].x, dots[j].y);
+          ctx.strokeStyle = `rgba(72,199,116,${0.06 * (1 - dist / 120)})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+  requestAnimationFrame(frame);
+})();
 </script>
 
 </body>
