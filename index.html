@@ -2041,8 +2041,16 @@
     font-size: clamp(26px, 3.4vw, 36px);
     letter-spacing: -0.035em;
     line-height: 1.02;
-    margin-bottom: 22px;
+    margin-bottom: 6px;
     text-shadow: 0 0 26px rgba(255,255,255,0.16);
+  }
+  .founder__card-niche {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(216,191,216,0.7);
+    margin-bottom: 22px;
   }
 
   /* результаты — крупные метрики */
@@ -3894,7 +3902,7 @@
 <section class="section section--tight" id="reviews">
   <div class="container">
     <div class="reviews-wrap reveal">
-      <a class="reviews-card" id="reviewsCard" href="https://t.me/otzivifedonko" target="_blank" rel="noopener" aria-label="Отзывы о Wake Up 1.0 в Telegram">
+      <a class="reviews-card" id="reviewsCard" href="https://t.me/otzivifedonko" target="_blank" rel="noopener" aria-label="Отзывы о платной работе с Федонко в Telegram">
       <div class="reviews-card__bar">
         <span class="reviews-card__dots" aria-hidden="true"><i></i><i></i><i></i></span>
         <span class="reviews-card__path">~/wake-up · <b>отзывы 1.0</b></span>
@@ -3903,7 +3911,7 @@
 
       <div class="reviews-card__body">
         <div>
-          <h3 class="reviews-card__title">Отзывы о Wake Up 1.0</h3>
+          <h3 class="reviews-card__title">Отзывы о платной работе с Федонко</h3>
           <p class="reviews-card__sub">Скриншоты, голосовые, цифры до и после — от тех, кто прошёл первую версию. Без фильтра и редактуры.</p>
         </div>
         <span class="reviews-card__cta">
@@ -3971,6 +3979,7 @@
         <div class="founder__card reveal">
           <span class="founder__card-kicker">результаты</span>
           <h3 class="founder__card-name">Артём Федонко</h3>
+          <p class="founder__card-niche">Инфобизнес · Медиасфера</p>
           <div class="founder__stats">
             <div class="founder__stat">
               <span class="founder__stat-value" data-count="30000" data-prefix="&gt; " data-suffix="$">&gt; 30 000$</span>
@@ -3993,23 +4002,23 @@
           <div class="founder__timeline">
             <div class="founder__tl">
               <span class="founder__tl-when">с 11 лет</span>
-              <p class="founder__tl-text">Начал путь в заработке. Перепробовал <strong>более 10 ниш</strong> — все безрезультатно.</p>
+              <p class="founder__tl-text">Начало пути в заработке. Перепробовал <strong>всё</strong> — от монтажа и инфографики до листовок. Более 10 ниш не дали результата.</p>
             </div>
             <div class="founder__tl">
               <span class="founder__tl-when">в 13 лет</span>
-              <p class="founder__tl-text">Зашёл в криптовалюту: <strong>большие связи</strong> и первые немалые деньги.</p>
+              <p class="founder__tl-text">С 11 до 13 лет — множество попыток, но денег 0. Узнал про криптовалюту, а именно мемкоины. Всё получалось легко — обрёл <strong>большие связи с миллионерами</strong>, был узнаваем скиллами. Первые немалые деньги.</p>
             </div>
             <div class="founder__tl">
               <span class="founder__tl-when">сентябрь 2025</span>
-              <p class="founder__tl-text">Холодные звонки и продажи. <strong>Более 180 000 ₽ за месяц</strong> — прорыв.</p>
+              <p class="founder__tl-text">Ушёл с криптовалюты — сильно выгорел. Попробовал холодные звонки и продажи, продавал продукты за %. <strong>Более 180 000 ₽/мес</strong> — мегапрорыв.</p>
             </div>
             <div class="founder__tl">
               <span class="founder__tl-when">октябрь 2025</span>
-              <p class="founder__tl-text">Масштабирование в <strong>инфобизнес</strong>.</p>
+              <p class="founder__tl-text">Масштабирование в <strong>инфобизнес</strong>. Личный бренд <strong>«Wake Up»</strong>.</p>
             </div>
             <div class="founder__tl">
-              <span class="founder__tl-when">октябрь — июнь</span>
-              <p class="founder__tl-text">Имею, что имею. За этот промежуток — <strong>более 30 000$</strong>.</p>
+              <span class="founder__tl-when">лето 2026</span>
+              <p class="founder__tl-text">Огромная аудитория, заработал <strong>более 30 000$</strong> на медиасфере. Пробую новые проекты. Создание <strong>Wake Up Empire 2.0</strong>.</p>
             </div>
           </div>
         </div>
@@ -4018,7 +4027,7 @@
   </div>
 </section>
 
-<section class="section" id="faq">
+<section class="section" id="faq" style="padding-bottom:60px;">
   <div class="container">
     <div class="section__head">
       <span class="section__kicker">FAQ</span>
@@ -4099,25 +4108,12 @@
       <details class="faq__item reveal delay-1">
         <summary class="faq__q">
           <span class="faq__q-num">05</span>
-          <span class="faq__q-text">Сколько это стоит?</span>
-          <span class="faq__q-icon" aria-hidden="true"></span>
-        </summary>
-        <div class="faq__a">
-          <div class="faq__a-inner">
-          Цена зависит от тарифа и сезона. Сравнить форматы можно в блоке <a href="#pricing" style="color:var(--text); text-decoration: underline; text-underline-offset: 3px;">«Тарифы»</a> — актуальные условия уточняются при заявке в Telegram.
-          </div>
-        </div>
-      </details>
-
-      <details class="faq__item reveal delay-2">
-        <summary class="faq__q">
-          <span class="faq__q-num">06</span>
           <span class="faq__q-text">Как попасть?</span>
           <span class="faq__q-icon" aria-hidden="true"></span>
         </summary>
         <div class="faq__a">
           <div class="faq__a-inner">
-          Заходишь в Telegram-канал, оставляешь заявку, проходишь короткий разбор — и получаешь доступ к сезону.
+          Перейди во вкладку «Тарифы» и выбери нужный. Если нужны индивидуальные условия — <a href="https://t.me/fedonko" target="_blank" rel="noopener" style="color:rgba(216,191,216,0.9);text-decoration:underline;">@fedonko</a>
           </div>
         </div>
       </details>
@@ -4228,15 +4224,14 @@
 
         <div class="plan__price">
           <div class="plan__price-row">
-            <span class="plan__price-val is-soft">по запросу</span>
-            <span class="plan__price-note">цена в личке</span>
+            <span class="plan__price-val" data-count="3490" data-suffix=" ₽">3 490 ₽</span>
           </div>
         </div>
         <span class="plan__charity">10% · на благотворительность</span>
 
         <ul class="plan__features">
           <li class="plan__cat">что входит</li>
-          <li>Коммьюнити <b>молодых гениев</b></li>
+          <li>Коммьюнити — <b>твоё окружение, что увлечено деньгами</b></li>
           <li>Эфиры и разборы</li>
           <li>Открытый ЛС Федонко для вопросов</li>
           <li>Более <b>50 рабочих гайдов</b></li>
@@ -4261,8 +4256,7 @@
 
         <div class="plan__price">
           <div class="plan__price-row">
-            <span class="plan__price-val is-soft">по запросу</span>
-            <span class="plan__price-note">цена в личке</span>
+            <span class="plan__price-val" data-count="4990" data-suffix=" ₽">4 990 ₽</span>
           </div>
           <span class="plan__save">доступ навсегда — лучшая цена сезона</span>
         </div>
@@ -4270,7 +4264,7 @@
 
         <ul class="plan__features">
           <li class="plan__cat">что входит</li>
-          <li>Коммьюнити <b>молодых гениев</b></li>
+          <li>Коммьюнити — <b>твоё окружение, что увлечено деньгами</b></li>
           <li>Эфиры и разборы</li>
           <li>Открытый ЛС Федонко для вопросов</li>
           <li>Более <b>50 рабочих гайдов</b></li>
