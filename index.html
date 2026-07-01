@@ -1111,12 +1111,100 @@
     max-width: 720px;
     margin-bottom: 32px;
   }
-  .cases__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+  /* ---------- CASES CAROUSEL ---------- */
+  :root {
+    --case-w: 360px;
+    --case-gap: 20px;
+    --case-pad: 40px;
   }
-  @media (max-width: 900px) { .cases__grid { grid-template-columns: 1fr; } }
+  @media (max-width: 720px) {
+    :root { --case-w: 280px; --case-pad: 20px; }
+  }
+
+  .cases__viewport {
+    position: relative;
+    margin: 0 -28px;
+    padding: 20px 0 10px;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+  }
+  .cases__track {
+    display: flex;
+    gap: var(--case-gap);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0 var(--case-pad);
+    scroll-padding-left: var(--case-pad);
+    cursor: grab;
+    overscroll-behavior-x: contain;
+  }
+  .cases__track::-webkit-scrollbar { display: none; }
+  .cases__track.is-dragging { cursor: grabbing; scroll-behavior: auto; }
+
+  .cases__track > .case-slot {
+    flex: 0 0 var(--case-w);
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+
+  .cases__nav {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+  .cases__dots {
+    display: flex;
+    gap: 6px;
+    padding: 0 14px;
+    align-items: center;
+  }
+  .cases__dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    transition: background .25s ease, transform .35s cubic-bezier(.4,1.4,.4,1), width .35s ease;
+  }
+  .cases__dot.is-active {
+    background: rgba(255,175,205,0.95);
+    width: 22px;
+    border-radius: 100px;
+    box-shadow: 0 0 12px rgba(255,150,190,0.55);
+  }
+  .cases__btn {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,150,190,0.25);
+    background: rgba(15,15,15,0.6);
+    color: var(--text);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: background .25s ease, border-color .25s ease, transform .25s ease, opacity .25s ease, box-shadow .25s ease, color .25s ease;
+  }
+  .cases__btn:hover {
+    background: rgba(255,150,190,0.95);
+    color: #0a0a0a;
+    border-color: rgba(255,150,190,0.95);
+    transform: translateY(-1px);
+    box-shadow: 0 0 22px rgba(255,150,190,0.5);
+  }
+  .cases__btn:disabled { opacity: 0.3; cursor: default; }
+  .cases__btn:disabled:hover {
+    background: rgba(15,15,15,0.6); color: var(--text);
+    border-color: rgba(255,150,190,0.25); transform: none; box-shadow: none;
+  }
+  .cases__btn svg { width: 16px; height: 16px; }
 
   .case-slot {
     --accent: 255, 150, 190;          /* sakura pink — общий акцент */
@@ -1259,10 +1347,12 @@
     object-fit: cover;
     display: block;
     z-index: 1;
-    background: #0a0a0a;
+    background: transparent;
     filter: grayscale(0.15) contrast(1.05);
     transition: filter .5s ease, transform .7s cubic-bezier(.2,.8,.2,1);
   }
+  .case-slot__photo img:not([src]),
+  .case-slot__photo img[src=""] { display: none; }
   .case-slot:hover .case-slot__photo {
     transform: translateY(-2px);
     box-shadow:
@@ -1697,150 +1787,221 @@
     .reviews-card__chip { font-size: 13.5px; }
   }
 
-  /* ---------- FAQ ---------- */
-  .faq__list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  /* ---------- RESULT (Результат) — timeline ---------- */
+  .result__timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 0 10px;
   }
-  .faq__item {
-    border: 1px solid rgba(216,191,216,0.10);
-    border-radius: 18px;
-    overflow: hidden;
-    background:
-      linear-gradient(180deg, rgba(210,185,210,0.03), rgba(210,185,210,0) 60%),
-      #0d0d0d;
-    transition: border-color .35s ease, background .35s ease;
+  .result__line,
+  .result__progress {
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    bottom: 30px;
+    width: 2px;
+    border-radius: 2px;
+    pointer-events: none;
   }
-  .faq__item[open] { border-color: rgba(216,191,216,0.28); }
-  .faq__item:hover { border-color: rgba(216,191,216,0.22); background: linear-gradient(180deg, rgba(210,185,210,0.05), rgba(210,185,210,0) 60%), #0d0d0d; }
+  .result__line {
+    background: linear-gradient(180deg,
+      transparent 0,
+      rgba(216,191,216,0.14) 6%,
+      rgba(216,191,216,0.14) 94%,
+      transparent 100%);
+    z-index: 0;
+  }
+  .result__progress {
+    height: 0;
+    background: linear-gradient(180deg,
+      rgba(255,175,205,0.9) 0%,
+      rgba(216,191,216,0.85) 100%);
+    box-shadow:
+      0 0 12px rgba(255,150,190,0.55),
+      0 0 24px rgba(216,191,216,0.25);
+    transition: height .55s cubic-bezier(.16,1,.3,1);
+    z-index: 1;
+  }
 
-  .faq__q {
-    list-style: none;
-    cursor: pointer;
-    padding: 22px 26px;
+  .result__step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 26px;
+    padding: 22px 0;
+    align-items: stretch;
+  }
+
+  .result__dot {
+    position: relative;
+    grid-row: 1;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    border: 1px solid rgba(216,191,216,0.20);
+    background:
+      radial-gradient(circle at 30% 30%, rgba(216,191,216,0.08), rgba(0,0,0,0) 60%),
+      #0b0b0b;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    font-family: 'Bricolage Grotesque', sans-serif;
+    justify-content: center;
+    color: rgba(216,191,216,0.55);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
     font-weight: 600;
-    font-size: 18px;
-    letter-spacing: -0.015em;
-    color: var(--text);
-    transition: color .25s ease;
-    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 0.08em;
+    z-index: 2;
+    transition:
+      border-color .5s ease,
+      color .5s ease,
+      background .5s ease,
+      box-shadow .5s ease,
+      transform .5s cubic-bezier(.2,.8,.2,1);
   }
-  .faq__q::-webkit-details-marker { display: none; }
-  .faq__q-num {
+  .result__dot::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid rgba(216,191,216,0.10);
+    opacity: 0;
+    transition: opacity .5s ease, transform .5s ease;
+  }
+  .result__step.is-active .result__dot {
+    border-color: rgba(216,191,216,0.9);
+    color: #fff;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255,175,205,0.28), rgba(0,0,0,0) 70%),
+      #0d0d0d;
+    box-shadow:
+      0 0 0 1px rgba(216,191,216,0.35) inset,
+      0 0 24px rgba(255,150,190,0.40),
+      0 0 48px rgba(216,191,216,0.15);
+    transform: scale(1.04);
+  }
+  .result__step.is-active .result__dot::after {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+
+  .result__card {
+    position: relative;
+    padding: 22px 26px 22px;
+    border-radius: 18px;
+    border: 1px solid rgba(216,191,216,0.10);
+    background:
+      linear-gradient(180deg, rgba(210,185,210,0.03), rgba(210,185,210,0) 70%),
+      #0d0d0d;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 28px;
+    align-items: center;
+    transition: border-color .5s ease, transform .5s cubic-bezier(.2,.8,.2,1), background .5s ease;
+  }
+  .result__card::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(216,191,216,0.35), transparent);
+    opacity: 0;
+    transition: opacity .5s ease;
+  }
+  .result__step.is-active .result__card {
+    border-color: rgba(216,191,216,0.30);
+    background:
+      linear-gradient(180deg, rgba(210,185,210,0.06), rgba(210,185,210,0) 70%),
+      #0d0d0d;
+    transform: translateX(4px);
+  }
+  .result__step.is-active .result__card::before { opacity: 1; }
+
+  .result__num {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-right: 14px;
+    display: block;
+    margin-bottom: 6px;
+    transition: color .5s ease;
   }
-  .faq__q-text { flex: 1; }
-  .faq__q-icon {
-    position: relative;
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    border: 1px solid rgba(216,191,216,0.22);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: var(--text);
-    transition: transform .35s cubic-bezier(.4,1.4,.4,1), background .25s ease, border-color .25s ease, color .25s ease;
-  }
-  .faq__q-icon::before {
-    content: '';
-    width: 10px; height: 1.2px;
-    background: currentColor;
-    position: absolute;
-  }
-  .faq__q-icon::after {
-    content: '';
-    width: 1.2px; height: 10px;
-    background: currentColor;
-    position: absolute;
-    transition: transform .35s cubic-bezier(.4,1.4,.4,1);
-  }
-  .faq__item[open] .faq__q-icon {
-    background: rgba(216,191,216,0.9);
-    color: #fff;
-    border-color: rgba(216,191,216,0.9);
-    transform: rotate(135deg);
-    box-shadow: 0 0 18px rgba(216,191,216,0.4);
-  }
+  .result__step.is-active .result__num { color: rgba(216,191,216,0.9); }
 
-  .faq__a {
-    overflow: hidden;
-    height: 0;
-    transition: height .42s cubic-bezier(.22,.61,.36,1);
-  }
-  .faq__item[open] .faq__a { height: auto; }
-  .faq__a-inner {
-    padding: 2px 26px 24px 26px;
-    color: #b8b8b8;
-    font-size: 15px;
-    line-height: 1.65;
-    max-width: 70ch;
-  }
-  .faq__a-inner p { margin: 0 0 12px; }
-  .faq__a-inner p:last-child { margin-bottom: 0; }
-  .faq__a-inner ul {
-    margin: 6px 0 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-  }
-  .faq__a-inner li {
-    position: relative;
-    padding-left: 20px;
-  }
-  .faq__a-inner li::before {
-    content: '';
-    position: absolute;
-    left: 2px; top: 9px;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: rgba(216,191,216,0.6);
-    box-shadow: 0 0 6px rgba(216,191,216,0.3);
-  }
-  .faq__note {
-    margin-top: 12px !important;
-    color: #8a8a8a;
-    font-size: 13.5px;
-    font-style: italic;
-  }
-  .faq__btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 16px;
-    padding: 11px 20px;
-    border-radius: 999px;
-    background: var(--text);
-    color: #0a0a0a;
+  .result__title {
     font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 600;
-    font-size: 14px;
-    letter-spacing: -0.01em;
-    text-decoration: none;
-    transition: transform .25s ease, box-shadow .25s ease;
+    font-size: 20px;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    margin: 0 0 6px;
+    line-height: 1.2;
   }
-  .faq__btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(255,255,255,0.18);
+  .result__text {
+    color: #b8b8b8;
+    font-size: 14.5px;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 46ch;
+  }
+  .result__text strong { color: rgba(216,191,216,0.95); font-weight: 600; }
+
+  .result__aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    text-align: right;
+    min-width: 96px;
+  }
+  .result__big {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: clamp(28px, 3.4vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: rgba(216,191,216,0.16);
+    transition: color .6s ease, text-shadow .6s ease;
+    white-space: nowrap;
+  }
+  .result__step.is-active .result__big {
+    color: rgba(216,191,216,0.85);
+    text-shadow: 0 0 22px rgba(255,150,190,0.30);
+  }
+  .result__cap {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  @media (max-width: 720px) {
+    .result__timeline { padding: 20px 0 6px; }
+    .result__step { grid-template-columns: 44px 1fr; gap: 16px; padding: 16px 0; }
+    .result__line, .result__progress { left: 22px; top: 20px; bottom: 20px; }
+    .result__dot { width: 44px; height: 44px; font-size: 11px; }
+    .result__card { grid-template-columns: 1fr; padding: 18px 20px; gap: 14px; }
+    .result__aside {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      text-align: left;
+      min-width: 0;
+      gap: 12px;
+    }
+    .result__cap { margin-top: 0; }
+    .result__title { font-size: 18px; }
   }
 
   @media (max-width: 540px) {
-    .faq__q { padding: 18px 20px; font-size: 16px; }
-    .faq__a-inner { padding: 2px 20px 20px 20px; font-size: 14.5px; }
-    .faq__q-num { display: none; }
+    .result__card { padding: 26px 22px 22px; }
+    .result__icon { width: 46px; height: 46px; }
+    .result__icon svg { width: 22px; height: 22px; }
   }
 
   /* ---------- FOUNDER (Создатель) ---------- */
@@ -3567,7 +3728,7 @@
       <a href="#program" class="topbar__link">Программа</a>
       <a href="#cases" class="topbar__link">Кейсы</a>
       <a href="#founder" class="topbar__link">Создатель</a>
-      <a href="#faq" class="topbar__link">FAQ</a>
+      <a href="#faq" class="topbar__link">Результат</a>
       <a href="#charity" class="topbar__link">Благотворительность</a>
       <a href="#pricing" class="topbar__link">Тарифы</a>
       <a href="#contact" class="topbar__link">Войти</a>
@@ -3584,7 +3745,7 @@
     <li><a href="#program" class="menu__item"><span class="menu__num">01</span><span>Программа</span></a></li>
     <li><a href="#cases" class="menu__item"><span class="menu__num">02</span><span>Кейсы</span></a></li>
     <li><a href="#founder" class="menu__item"><span class="menu__num">03</span><span>Создатель</span></a></li>
-    <li><a href="#faq" class="menu__item"><span class="menu__num">04</span><span>FAQ</span></a></li>
+    <li><a href="#faq" class="menu__item"><span class="menu__num">04</span><span>Результат</span></a></li>
     <li><a href="#charity" class="menu__item"><span class="menu__num">05</span><span>Благотворительность</span></a></li>
     <li><a href="#pricing" class="menu__item"><span class="menu__num">06</span><span>Тарифы</span></a></li>
     <li><a href="#contact" class="menu__item"><span class="menu__num">→</span><span>Войти</span></a></li>
@@ -3815,11 +3976,89 @@
       Не «успехи на бумаге», а реальные ребята с реальными деньгами. Ниже — три истории из Wake Up. По кнопке открывается отзыв в Telegram-канале — там голосовые, скрины переписок и цифры.
     </p>
 
-    <div class="cases__grid">
+    <div class="cases__viewport">
+      <div class="cases__track" id="casesTrack">
 
       <article class="case-slot reveal" data-tilt>
         <div class="case-slot__head">
           <span class="case-slot__num">case · 01</span>
+          <span class="case-slot__niche">доходы за март</span>
+        </div>
+        <h3 class="case-slot__name">Кирилл Виллард</h3>
+        <div class="case-slot__age">деньги начали приходить сами</div>
+        <div class="case-slot__photo">
+          <span class="case-slot__photo-fallback" aria-hidden="true">К</span>
+          <img src="kirill.jpg" alt="Кирилл Виллард" loading="lazy">
+        </div>
+        <div class="case-slot__amount">
+          <span class="case-slot__amount-value">2 143 968 ₽</span>
+          <span class="case-slot__amount-label">доходы за месяц</span>
+        </div>
+        <a class="case-slot__link" href="https://t.me/otzivifedonko" target="_blank" rel="noopener">
+          <span class="case-slot__link-text">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.426 2.574 2.43 9.9c-1.296.5-1.288 1.214-.236 1.535l4.872 1.52 1.876 5.747c.227.628.345.95.681.95.255 0 .388-.118.553-.27l2.396-2.319 4.978 3.677c.916.504 1.575.243 1.803-.85L21.6 4.013c.336-1.34-.503-1.949-1.376-1.553z"/></svg>
+            Открыть отзыв
+          </span>
+          <span class="case-slot__link-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+          </span>
+        </a>
+      </article>
+      <article class="case-slot reveal delay-1" data-tilt>
+        <div class="case-slot__head">
+          <span class="case-slot__num">case · 02</span>
+          <span class="case-slot__niche">медиа · охваты</span>
+        </div>
+        <h3 class="case-slot__name">Ильдар</h3>
+        <div class="case-slot__age">рестораны, деньги, охваты</div>
+        <div class="case-slot__photo">
+          <span class="case-slot__photo-fallback" aria-hidden="true">И</span>
+          <img src="ildar.jpg" alt="Ильдар" loading="lazy">
+        </div>
+        <div class="case-slot__amount">
+          <span class="case-slot__amount-value">11 M</span>
+          <span class="case-slot__amount-label">просмотров за 48ч</span>
+        </div>
+        <a class="case-slot__link" href="https://t.me/otzivifedonko" target="_blank" rel="noopener">
+          <span class="case-slot__link-text">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.426 2.574 2.43 9.9c-1.296.5-1.288 1.214-.236 1.535l4.872 1.52 1.876 5.747c.227.628.345.95.681.95.255 0 .388-.118.553-.27l2.396-2.319 4.978 3.677c.916.504 1.575.243 1.803-.85L21.6 4.013c.336-1.34-.503-1.949-1.376-1.553z"/></svg>
+            Открыть отзыв
+          </span>
+          <span class="case-slot__link-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+          </span>
+        </a>
+      </article>
+
+      <article class="case-slot reveal delay-2" data-tilt>
+        <div class="case-slot__head">
+          <span class="case-slot__num">case · 03</span>
+          <span class="case-slot__niche">wake up feedback</span>
+        </div>
+        <h3 class="case-slot__name">Pavel Ortyakov</h3>
+        <div class="case-slot__age">траты за месяц</div>
+        <div class="case-slot__photo">
+          <span class="case-slot__photo-fallback" aria-hidden="true">P</span>
+          <img src="pavel-o.jpg" alt="Pavel Ortyakov" loading="lazy">
+        </div>
+        <div class="case-slot__amount">
+          <span class="case-slot__amount-value">410 690 ₽</span>
+          <span class="case-slot__amount-label">трат за месяц</span>
+        </div>
+        <a class="case-slot__link" href="https://t.me/otzivifedonko" target="_blank" rel="noopener">
+          <span class="case-slot__link-text">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.426 2.574 2.43 9.9c-1.296.5-1.288 1.214-.236 1.535l4.872 1.52 1.876 5.747c.227.628.345.95.681.95.255 0 .388-.118.553-.27l2.396-2.319 4.978 3.677c.916.504 1.575.243 1.803-.85L21.6 4.013c.336-1.34-.503-1.949-1.376-1.553z"/></svg>
+            Открыть отзыв
+          </span>
+          <span class="case-slot__link-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+          </span>
+        </a>
+      </article>
+
+      <article class="case-slot reveal delay-3" data-tilt>
+        <div class="case-slot__head">
+          <span class="case-slot__num">case · 04</span>
           <span class="case-slot__niche">недвижимость</span>
         </div>
         <h3 class="case-slot__name">Павел</h3>
@@ -3843,9 +4082,9 @@
         </a>
       </article>
 
-      <article class="case-slot reveal delay-1" data-tilt>
+      <article class="case-slot reveal" data-tilt>
         <div class="case-slot__head">
-          <span class="case-slot__num">case · 02</span>
+          <span class="case-slot__num">case · 05</span>
           <span class="case-slot__niche">монтаж · продюсирование</span>
         </div>
         <h3 class="case-slot__name">Артём</h3>
@@ -3869,9 +4108,61 @@
         </a>
       </article>
 
-      <article class="case-slot reveal delay-2" data-tilt>
+      <article class="case-slot reveal" data-tilt>
         <div class="case-slot__head">
-          <span class="case-slot__num">case · 03</span>
+          <span class="case-slot__num">case · 06</span>
+          <span class="case-slot__niche">медийка · tiktok</span>
+        </div>
+        <h3 class="case-slot__name">Костя Реальный</h3>
+        <div class="case-slot__age">гайд от Федонко · разъеб</div>
+        <div class="case-slot__photo">
+          <span class="case-slot__photo-fallback" aria-hidden="true">К</span>
+          <img src="if.jpg" alt="Костя Реальный" loading="lazy">
+        </div>
+        <div class="case-slot__amount">
+          <span class="case-slot__amount-value">351 916</span>
+          <span class="case-slot__amount-label">просмотров на видео</span>
+        </div>
+        <a class="case-slot__link" href="https://t.me/otzivifedonko" target="_blank" rel="noopener">
+          <span class="case-slot__link-text">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.426 2.574 2.43 9.9c-1.296.5-1.288 1.214-.236 1.535l4.872 1.52 1.876 5.747c.227.628.345.95.681.95.255 0 .388-.118.553-.27l2.396-2.319 4.978 3.677c.916.504 1.575.243 1.803-.85L21.6 4.013c.336-1.34-.503-1.949-1.376-1.553z"/></svg>
+            Открыть отзыв
+          </span>
+          <span class="case-slot__link-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+          </span>
+        </a>
+      </article>
+
+      <article class="case-slot reveal" data-tilt>
+        <div class="case-slot__head">
+          <span class="case-slot__num">case · 07</span>
+          <span class="case-slot__niche">1/4 million</span>
+        </div>
+        <h3 class="case-slot__name">MIRAMISTIN</h3>
+        <div class="case-slot__age">четверть миллиона · STAGE</div>
+        <div class="case-slot__photo">
+          <span class="case-slot__photo-fallback" aria-hidden="true">M</span>
+          <img src="miramistin.jpg" alt="MIRAMISTIN" loading="lazy">
+        </div>
+        <div class="case-slot__amount">
+          <span class="case-slot__amount-value">250 000 ₽</span>
+          <span class="case-slot__amount-label">в руках</span>
+        </div>
+        <a class="case-slot__link" href="https://t.me/otzivifedonko" target="_blank" rel="noopener">
+          <span class="case-slot__link-text">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.426 2.574 2.43 9.9c-1.296.5-1.288 1.214-.236 1.535l4.872 1.52 1.876 5.747c.227.628.345.95.681.95.255 0 .388-.118.553-.27l2.396-2.319 4.978 3.677c.916.504 1.575.243 1.803-.85L21.6 4.013c.336-1.34-.503-1.949-1.376-1.553z"/></svg>
+            Открыть отзыв
+          </span>
+          <span class="case-slot__link-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+          </span>
+        </a>
+      </article>
+
+      <article class="case-slot reveal" data-tilt>
+        <div class="case-slot__head">
+          <span class="case-slot__num">case · 08</span>
           <span class="case-slot__niche">маркетинг-агентство</span>
         </div>
         <h3 class="case-slot__name">Мирослав</h3>
@@ -3895,6 +4186,200 @@
         </a>
       </article>
 
+      <article class="case-slot reveal" data-tilt>
+        <div class="case-slot__head">
+          <span class="case-slot__num">case · 09</span>
+          <span class="case-slot__niche">путь за год</span>
+        </div>
+        <h3 class="case-slot__name">Konstantin Mishustin</h3>
+        <div class="case-slot__age">купил часы себе на др</div>
+        <div class="case-slot__photo">
+          <span class="case-slot__photo-fallback" aria-hidden="true">К</span>
+          <img src="konstantin.jpg" alt="Konstantin Mishustin" loading="lazy">
+        </div>
+        <div class="case-slot__amount">
+          <span class="case-slot__amount-value">190 566 ₽</span>
+          <span class="case-slot__amount-label">заработал за 2026</span>
+        </div>
+        <a class="case-slot__link" href="https://t.me/otzivifedonko" target="_blank" rel="noopener">
+          <span class="case-slot__link-text">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.426 2.574 2.43 9.9c-1.296.5-1.288 1.214-.236 1.535l4.872 1.52 1.876 5.747c.227.628.345.95.681.95.255 0 .388-.118.553-.27l2.396-2.319 4.978 3.677c.916.504 1.575.243 1.803-.85L21.6 4.013c.336-1.34-.503-1.949-1.376-1.553z"/></svg>
+            Открыть отзыв
+          </span>
+          <span class="case-slot__link-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+          </span>
+        </a>
+      </article>
+
+      <article class="case-slot reveal" data-tilt>
+        <div class="case-slot__head">
+          <span class="case-slot__num">case · 10</span>
+          <span class="case-slot__niche">собственное агентство</span>
+        </div>
+        <h3 class="case-slot__name">Костя</h3>
+        <div class="case-slot__age">16 лет · собственное агентство</div>
+        <div class="case-slot__photo">
+          <span class="case-slot__photo-fallback" aria-hidden="true">К</span>
+          <img src="kostya.jpg" alt="Костя" loading="lazy">
+        </div>
+        <div class="case-slot__amount">
+          <span class="case-slot__amount-value">130 000 ₽</span>
+          <span class="case-slot__amount-label">в месяц</span>
+        </div>
+        <a class="case-slot__link" href="https://t.me/otzivifedonko/69" target="_blank" rel="noopener">
+          <span class="case-slot__link-text">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.426 2.574 2.43 9.9c-1.296.5-1.288 1.214-.236 1.535l4.872 1.52 1.876 5.747c.227.628.345.95.681.95.255 0 .388-.118.553-.27l2.396-2.319 4.978 3.677c.916.504 1.575.243 1.803-.85L21.6 4.013c.336-1.34-.503-1.949-1.376-1.553z"/></svg>
+            Открыть отзыв
+          </span>
+          <span class="case-slot__link-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+          </span>
+        </a>
+      </article>
+
+      <article class="case-slot reveal" data-tilt>
+        <div class="case-slot__head">
+          <span class="case-slot__num">case · 11</span>
+          <span class="case-slot__niche">telegram</span>
+        </div>
+        <h3 class="case-slot__name">Андрей Dreiko</h3>
+        <div class="case-slot__age">15 лет · Telegram</div>
+        <div class="case-slot__photo">
+          <span class="case-slot__photo-fallback" aria-hidden="true">А</span>
+          <img src="andrey.jpg" alt="Андрей Dreiko" loading="lazy">
+        </div>
+        <div class="case-slot__amount">
+          <span class="case-slot__amount-value">100 000 ₽</span>
+          <span class="case-slot__amount-label">в месяц</span>
+        </div>
+        <a class="case-slot__link" href="https://t.me/otzivifedonko/66" target="_blank" rel="noopener">
+          <span class="case-slot__link-text">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.426 2.574 2.43 9.9c-1.296.5-1.288 1.214-.236 1.535l4.872 1.52 1.876 5.747c.227.628.345.95.681.95.255 0 .388-.118.553-.27l2.396-2.319 4.978 3.677c.916.504 1.575.243 1.803-.85L21.6 4.013c.336-1.34-.503-1.949-1.376-1.553z"/></svg>
+            Открыть отзыв
+          </span>
+          <span class="case-slot__link-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+          </span>
+        </a>
+      </article>
+
+      <article class="case-slot reveal" data-tilt>
+        <div class="case-slot__head">
+          <span class="case-slot__num">case · 12</span>
+          <span class="case-slot__niche">продажи</span>
+        </div>
+        <h3 class="case-slot__name">Яна</h3>
+        <div class="case-slot__age">13 лет · продажи</div>
+        <div class="case-slot__photo">
+          <span class="case-slot__photo-fallback" aria-hidden="true">Я</span>
+          <img src="yana.jpg" alt="Яна" loading="lazy">
+        </div>
+        <div class="case-slot__amount">
+          <span class="case-slot__amount-value">70 000 ₽</span>
+          <span class="case-slot__amount-label">в месяц</span>
+        </div>
+        <a class="case-slot__link" href="https://t.me/otzivifedonko/38" target="_blank" rel="noopener">
+          <span class="case-slot__link-text">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.426 2.574 2.43 9.9c-1.296.5-1.288 1.214-.236 1.535l4.872 1.52 1.876 5.747c.227.628.345.95.681.95.255 0 .388-.118.553-.27l2.396-2.319 4.978 3.677c.916.504 1.575.243 1.803-.85L21.6 4.013c.336-1.34-.503-1.949-1.376-1.553z"/></svg>
+            Открыть отзыв
+          </span>
+          <span class="case-slot__link-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+          </span>
+        </a>
+      </article>
+
+      <article class="case-slot reveal" data-tilt>
+        <div class="case-slot__head">
+          <span class="case-slot__num">case · 13</span>
+          <span class="case-slot__niche">дизайн · заказ</span>
+        </div>
+        <h3 class="case-slot__name">Александр Зотов</h3>
+        <div class="case-slot__age">13 лет · дизайн</div>
+        <div class="case-slot__photo">
+          <span class="case-slot__photo-fallback" aria-hidden="true">А</span>
+          <img src="alexander.jpg" alt="Александр Зотов" loading="lazy">
+        </div>
+        <div class="case-slot__amount">
+          <span class="case-slot__amount-value">6 200 ₽</span>
+          <span class="case-slot__amount-label">1 заказ за 2–3 часа</span>
+        </div>
+        <a class="case-slot__link" href="https://t.me/otzivifedonko" target="_blank" rel="noopener">
+          <span class="case-slot__link-text">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.426 2.574 2.43 9.9c-1.296.5-1.288 1.214-.236 1.535l4.872 1.52 1.876 5.747c.227.628.345.95.681.95.255 0 .388-.118.553-.27l2.396-2.319 4.978 3.677c.916.504 1.575.243 1.803-.85L21.6 4.013c.336-1.34-.503-1.949-1.376-1.553z"/></svg>
+            Открыть отзыв
+          </span>
+          <span class="case-slot__link-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+          </span>
+        </a>
+      </article>
+
+      <article class="case-slot reveal" data-tilt>
+        <div class="case-slot__head">
+          <span class="case-slot__num">case · 14</span>
+          <span class="case-slot__niche">услуги · продажи</span>
+        </div>
+        <h3 class="case-slot__name">Роман Табатчиков</h3>
+        <div class="case-slot__age">окупил вход за неделю</div>
+        <div class="case-slot__photo">
+          <span class="case-slot__photo-fallback" aria-hidden="true">Р</span>
+          <img src="roman.jpg" alt="Роман Табатчиков" loading="lazy">
+        </div>
+        <div class="case-slot__amount">
+          <span class="case-slot__amount-value">5 000 ₽</span>
+          <span class="case-slot__amount-label">2 клиента за неделю</span>
+        </div>
+        <a class="case-slot__link" href="https://t.me/otzivifedonko" target="_blank" rel="noopener">
+          <span class="case-slot__link-text">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.426 2.574 2.43 9.9c-1.296.5-1.288 1.214-.236 1.535l4.872 1.52 1.876 5.747c.227.628.345.95.681.95.255 0 .388-.118.553-.27l2.396-2.319 4.978 3.677c.916.504 1.575.243 1.803-.85L21.6 4.013c.336-1.34-.503-1.949-1.376-1.553z"/></svg>
+            Открыть отзыв
+          </span>
+          <span class="case-slot__link-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+          </span>
+        </a>
+      </article>
+
+      <article class="case-slot reveal" data-tilt>
+        <div class="case-slot__head">
+          <span class="case-slot__num">case · 15</span>
+          <span class="case-slot__niche">веб-дизайн · сайты</span>
+        </div>
+        <h3 class="case-slot__name">Михаил</h3>
+        <div class="case-slot__age">12 лет · разработка сайтов</div>
+        <div class="case-slot__photo">
+          <span class="case-slot__photo-fallback" aria-hidden="true">М</span>
+          <img src="mihail.jpg" alt="Михаил" loading="lazy">
+        </div>
+        <div class="case-slot__amount">
+          <span class="case-slot__amount-value">3 750 ₽</span>
+          <span class="case-slot__amount-label">предоплата 25%</span>
+        </div>
+        <a class="case-slot__link" href="https://t.me/otzivifedonko" target="_blank" rel="noopener">
+          <span class="case-slot__link-text">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.426 2.574 2.43 9.9c-1.296.5-1.288 1.214-.236 1.535l4.872 1.52 1.876 5.747c.227.628.345.95.681.95.255 0 .388-.118.553-.27l2.396-2.319 4.978 3.677c.916.504 1.575.243 1.803-.85L21.6 4.013c.336-1.34-.503-1.949-1.376-1.553z"/></svg>
+            Открыть отзыв
+          </span>
+          <span class="case-slot__link-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+          </span>
+        </a>
+      </article>
+
+
+      </div>
+    </div>
+
+    <div class="cases__nav">
+      <button class="cases__btn" id="casesPrev" aria-label="Назад" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <div class="cases__dots" id="casesDots"></div>
+      <button class="cases__btn" id="casesNext" aria-label="Вперёд" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
     </div>
   </div>
 </section>
@@ -4030,93 +4515,88 @@
 <section class="section" id="faq" style="padding-bottom:60px;">
   <div class="container">
     <div class="section__head">
-      <span class="section__kicker">FAQ</span>
-      <h2 class="section__title">Вопросы</h2>
+      <span class="section__kicker">после входа в empire</span>
+      <h2 class="section__title">Результат</h2>
     </div>
-    <div class="faq__list">
 
-      <details class="faq__item reveal">
-        <summary class="faq__q">
-          <span class="faq__q-num">01</span>
-          <span class="faq__q-text">Кому подойдёт Wake Up Empire?</span>
-          <span class="faq__q-icon" aria-hidden="true"></span>
-        </summary>
-        <div class="faq__a">
-          <div class="faq__a-inner">
-          <ul>
-            <li>Новичкам — без базы и понимания, что делать и в каком порядке.</li>
-            <li>Фрилансерам, что делают на услугах 10–20к и не понимают, как повысить чек.</li>
-            <li>Фрилансерам, что уже делают по 70–90к, но не понимают, как масштабироваться в малый бизнес.</li>
-            <li>CEO малого бизнеса с проблемами в его развитии.</li>
-          </ul>
+    <div class="result__timeline" id="resultTimeline">
+      <span class="result__line" aria-hidden="true"></span>
+      <span class="result__progress" id="resultProgress" aria-hidden="true"></span>
+
+      <article class="result__step">
+        <span class="result__dot">01</span>
+        <div class="result__card">
+          <div class="result__body">
+            <span class="result__num">шаг 01</span>
+            <h3 class="result__title">Выбираешь нишу</h3>
+            <p class="result__text">Выбрал одну из ниш <strong>Empire</strong> и изучил пошаговый план по ней.</p>
+          </div>
+          <div class="result__aside">
+            <span class="result__big">план</span>
+            <span class="result__cap">старт</span>
           </div>
         </div>
-      </details>
+      </article>
 
-      <details class="faq__item reveal delay-1">
-        <summary class="faq__q">
-          <span class="faq__q-num">02</span>
-          <span class="faq__q-text">С чего я буду зарабатывать?</span>
-          <span class="faq__q-icon" aria-hidden="true"></span>
-        </summary>
-        <div class="faq__a">
-          <div class="faq__a-inner">
-          <p>Wake Up Empire сочетает в себе способы заработка, такие как:</p>
-          <ul>
-            <li>Монтаж, дизайн</li>
-            <li>Продажи</li>
-            <li>Продюсирование</li>
-            <li>Call-продажи</li>
-            <li>Инфобизнес</li>
-            <li>Агентства (малый бизнес)</li>
-          </ul>
-          <p class="faq__note">И это не всё — список постоянно дополняется.</p>
+      <article class="result__step">
+        <span class="result__dot">02</span>
+        <div class="result__card">
+          <div class="result__body">
+            <span class="result__num">шаг 02</span>
+            <h3 class="result__title">Первые деньги</h3>
+            <p class="result__text">Уже через <strong>неделю</strong> — первые деньги. Самое лучшее чувство в жизни.</p>
+          </div>
+          <div class="result__aside">
+            <span class="result__big">7 дней</span>
+            <span class="result__cap">до первого чека</span>
           </div>
         </div>
-      </details>
+      </article>
 
-      <details class="faq__item reveal delay-2">
-        <summary class="faq__q">
-          <span class="faq__q-num">03</span>
-          <span class="faq__q-text">У меня нет ниши и проекта. Подойдёт?</span>
-          <span class="faq__q-icon" aria-hidden="true"></span>
-        </summary>
-        <div class="faq__a">
-          <div class="faq__a-inner">
-          Да, 100%. Wake Up Empire отличается от других продуктов тем, что вмещает в себя пошаговые планы действий с абсолютного 0 до первых сотен тысяч.
+      <article class="result__step">
+        <span class="result__dot">03</span>
+        <div class="result__card">
+          <div class="result__body">
+            <span class="result__num">шаг 03</span>
+            <h3 class="result__title">Сильное окружение</h3>
+            <p class="result__text">Общаешься, обретаешь новые знакомства и попадаешь в <strong>коммьюнити</strong>, с которым хочешь двигаться.</p>
+          </div>
+          <div class="result__aside">
+            <span class="result__big">350+</span>
+            <span class="result__cap">выпускников</span>
           </div>
         </div>
-      </details>
+      </article>
 
-      <details class="faq__item reveal delay-3">
-        <summary class="faq__q">
-          <span class="faq__q-num">04</span>
-          <span class="faq__q-text">Точно ли это не скам?</span>
-          <span class="faq__q-icon" aria-hidden="true"></span>
-        </summary>
-        <div class="faq__a">
-          <div class="faq__a-inner">
-          <p>Федонко обучил более 350 людей — все видео- и фотодоказательства можно дополнительно запросить. Недоверие — это нормально, не стесняйтесь запрашивать доп. информацию.</p>
-          <a href="https://t.me/fedonko" target="_blank" rel="noopener" class="faq__btn">
-            Запросить доказательства
-            <span aria-hidden="true">↗</span>
-          </a>
+      <article class="result__step">
+        <span class="result__dot">04</span>
+        <div class="result__card">
+          <div class="result__body">
+            <span class="result__num">шаг 04</span>
+            <h3 class="result__title">Стабильный доход</h3>
+            <p class="result__text">Выходишь на 100–300 тысяч в месяц. Больше не думаешь о деньгах, живёшь спокойно, <strong>помогаешь родителям</strong>.</p>
+          </div>
+          <div class="result__aside">
+            <span class="result__big">300k ₽</span>
+            <span class="result__cap">в месяц</span>
           </div>
         </div>
-      </details>
+      </article>
 
-      <details class="faq__item reveal delay-1">
-        <summary class="faq__q">
-          <span class="faq__q-num">05</span>
-          <span class="faq__q-text">Как попасть?</span>
-          <span class="faq__q-icon" aria-hidden="true"></span>
-        </summary>
-        <div class="faq__a">
-          <div class="faq__a-inner">
-          Перейди во вкладку «Тарифы» и выбери нужный. Если нужны индивидуальные условия — <a href="https://t.me/fedonko" target="_blank" rel="noopener" style="color:rgba(216,191,216,0.9);text-decoration:underline;">@fedonko</a>
+      <article class="result__step">
+        <span class="result__dot">05</span>
+        <div class="result__card">
+          <div class="result__body">
+            <span class="result__num">шаг 05</span>
+            <h3 class="result__title">Масштабирование</h3>
+            <p class="result__text">Новые проекты, <strong>первые миллионы</strong>, путешествуешь — без потолка в доходе.</p>
+          </div>
+          <div class="result__aside">
+            <span class="result__big">1M+ ₽</span>
+            <span class="result__cap">→ ∞</span>
           </div>
         </div>
-      </details>
+      </article>
 
     </div>
   </div>
@@ -4458,54 +4938,153 @@
   }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
   document.querySelectorAll('.section').forEach((el) => sectionIo.observe(el));
 
-  // ---------- FAQ SMOOTH ACCORDION ----------
-  (() => {
-    const items = document.querySelectorAll('.faq__item');
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // ---------- RESULT TIMELINE ----------
+  (function resultTimeline() {
+    const timeline = document.getElementById('resultTimeline');
+    const progress = document.getElementById('resultProgress');
+    if (!timeline || !progress) return;
+    const steps = Array.from(timeline.querySelectorAll('.result__step'));
+    if (!steps.length) return;
 
-    items.forEach((item) => {
-      const summary = item.querySelector('.faq__q');
-      const panel = item.querySelector('.faq__a');
-      if (!summary || !panel) return;
+    const stepIo = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) e.target.classList.add('is-active');
+      });
+    }, { threshold: 0.35, rootMargin: '0px 0px -20% 0px' });
+    steps.forEach((s) => stepIo.observe(s));
 
-      summary.addEventListener('click', (e) => {
-        if (reduce) return; // нативное поведение для reduced-motion
-        e.preventDefault();
-        if (item.dataset.animating) return;
+    let rafId = null;
+    const update = () => {
+      rafId = null;
+      const rect = timeline.getBoundingClientRect();
+      const anchor = window.innerHeight * 0.55;
+      const total = rect.height;
+      const passed = Math.max(0, Math.min(total, anchor - rect.top));
+      progress.style.height = passed + 'px';
+    };
+    const schedule = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    update();
+  })();
 
-        if (item.open) {
-          // ---- закрытие ----
-          item.dataset.animating = '1';
-          panel.style.height = panel.scrollHeight + 'px';
-          requestAnimationFrame(() => {
-            panel.style.height = '0px';
-          });
-          const done = () => {
-            item.open = false;
-            panel.style.height = '';
-            delete item.dataset.animating;
-            panel.removeEventListener('transitionend', done);
-          };
-          panel.addEventListener('transitionend', done);
-        } else {
-          // ---- открытие ----
-          item.dataset.animating = '1';
-          item.open = true;
-          const target = panel.scrollHeight;
-          panel.style.height = '0px';
-          requestAnimationFrame(() => {
-            panel.style.height = target + 'px';
-          });
-          const done = (ev) => {
-            if (ev.propertyName !== 'height') return;
-            panel.style.height = '';
-            delete item.dataset.animating;
-            panel.removeEventListener('transitionend', done);
-          };
-          panel.addEventListener('transitionend', done);
-        }
+  // ---------- CASES IMG FALLBACK ----------
+  document.querySelectorAll('.case-slot__photo img').forEach((img) => {
+    img.loading = 'eager';
+    img.decoding = 'async';
+    const hide = () => { img.style.display = 'none'; };
+    const check = () => {
+      if (img.complete && (img.naturalWidth === 0 || img.naturalHeight === 0)) hide();
+    };
+    img.addEventListener('error', hide, { once: true });
+    img.addEventListener('load', check, { once: true });
+    if (img.complete) check();
+  });
+
+  // ---------- CASES CAROUSEL ----------
+  (function casesCarousel() {
+    const track = document.getElementById('casesTrack');
+    const prev  = document.getElementById('casesPrev');
+    const next  = document.getElementById('casesNext');
+    const dotsW = document.getElementById('casesDots');
+    if (!track || !prev || !next || !dotsW) return;
+
+    const items = Array.from(track.children);
+    const N = items.length;
+    if (!N) return;
+
+    const padLeft = () => {
+      const cs = getComputedStyle(track);
+      return parseFloat(cs.paddingLeft) || 0;
+    };
+    const targetFor = (i) => items[i].offsetLeft - padLeft();
+    const trackAnchor = () => track.scrollLeft + padLeft();
+
+    const findActive = () => {
+      const a = trackAnchor();
+      let best = 0, bestDist = Infinity;
+      items.forEach((el, i) => {
+        const d = Math.abs(el.offsetLeft - a);
+        if (d < bestDist) { bestDist = d; best = i; }
+      });
+      return best;
+    };
+
+    items.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.type = 'button';
+      d.className = 'cases__dot';
+      d.setAttribute('aria-label', 'Кейс ' + (i + 1));
+      d.addEventListener('click', () => snapTo(i));
+      dotsW.appendChild(d);
+    });
+    const dots = Array.from(dotsW.children);
+
+    const snapTo = (i) => {
+      const idx = Math.max(0, Math.min(N - 1, i));
+      track.scrollTo({ left: targetFor(idx), behavior: 'smooth' });
+    };
+
+    let rafId = null;
+    const apply = () => {
+      rafId = null;
+      const idx = findActive();
+      items.forEach((el, j) => el.classList.toggle('is-active', j === idx));
+      dots.forEach((d, j) => d.classList.toggle('is-active', j === idx));
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 1;
+    };
+    const schedule = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(apply);
+    };
+
+    track.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+
+    prev.addEventListener('click', () => snapTo(findActive() - 1));
+    next.addEventListener('click', () => snapTo(findActive() + 1));
+
+    let isDown = false, startX = 0, startLeft = 0, moved = 0;
+    track.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      isDown = true; moved = 0;
+      startX = e.clientX;
+      startLeft = track.scrollLeft;
+      track.classList.add('is-dragging');
+    });
+    track.addEventListener('pointermove', (e) => {
+      if (!isDown) return;
+      const dx = e.clientX - startX;
+      moved = Math.abs(dx);
+      track.scrollLeft = startLeft - dx;
+    });
+    const endDrag = () => {
+      if (!isDown) return;
+      isDown = false;
+      track.classList.remove('is-dragging');
+      const idx = findActive();
+      track.scrollTo({ left: targetFor(idx), behavior: 'smooth' });
+    };
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+    track.addEventListener('pointerleave', endDrag);
+
+    items.forEach((el) => {
+      el.addEventListener('click', (e) => {
+        if (moved > 6) e.preventDefault();
       });
     });
+
+    const init = () => {
+      track.scrollLeft = targetFor(0);
+      apply();
+    };
+    requestAnimationFrame(init);
+    window.addEventListener('load', init);
   })();
 
   // ---------- TRACK ACCORDION (Что внутри 2.0) ----------
