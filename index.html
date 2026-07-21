@@ -33,7 +33,7 @@
     --radius: 14px;
   }
 
-  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
   body {
     font-family: 'Manrope', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
@@ -790,6 +790,298 @@
     animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) .5s forwards;
   }
 
+  /* ============================================================
+     HERO v2 — SPLIT «1.0 → 2.0»
+     ============================================================ */
+  .hero__inner {
+    text-align: left;
+    align-items: stretch;
+    gap: 42px;
+  }
+  .hero__brandline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) .15s forwards;
+  }
+  .hero__mark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text);
+    font-family: 'Bricolage Grotesque', 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: clamp(20px, 2vw, 26px);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .hero__mark-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,175,205,0.9);
+    box-shadow: 0 0 12px rgba(255,175,205,0.7);
+    animation: pulse 2s ease infinite;
+  }
+  .hero__mark-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-left: 4px;
+  }
+
+  /* — сам сплит — */
+  .hero__split {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: stretch;
+    gap: 0;
+    min-height: 62vh;
+  }
+  .hero__side {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 24px 30px;
+    position: relative;
+    min-width: 0; /* защита от overflow в grid */
+  }
+  .hero__side--past {
+    align-items: flex-end;
+    text-align: right;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1s cubic-bezier(.2,.7,.2,1) .25s forwards;
+  }
+  .hero__side--future {
+    align-items: flex-start;
+    text-align: left;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1s cubic-bezier(.2,.7,.2,1) .4s forwards;
+  }
+  .hero__side-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .hero__side--past .hero__side-kicker { color: rgba(255,255,255,0.35); }
+  .hero__side--future .hero__side-kicker { color: rgba(255,175,205,0.85); }
+  .hero__side-kicker::before,
+  .hero__side--future .hero__side-kicker::after {
+    content: '';
+    width: 20px; height: 1px;
+    background: currentColor;
+    opacity: 0.55;
+  }
+  .hero__side--past .hero__side-kicker::before { display: none; }
+  .hero__side--past .hero__side-kicker::after {
+    content: '';
+    width: 20px; height: 1px;
+    background: currentColor;
+    opacity: 0.55;
+  }
+  .hero__side--future .hero__side-kicker::after { display: none; }
+
+  .hero__side-num {
+    font-family: 'Bricolage Grotesque', 'Manrope', sans-serif;
+    font-size: clamp(96px, 15vw, 200px);
+    line-height: 0.82;
+    font-weight: 800;
+    letter-spacing: -0.055em;
+    margin: 4px 0 2px;
+    display: inline-block;
+    max-width: 100%;
+    font-variation-settings: "opsz" 96;
+  }
+  .hero__side-num--ghost {
+    color: transparent;
+    -webkit-text-stroke: 1.2px rgba(255,255,255,0.28);
+    text-shadow: none;
+  }
+  .hero__side-num--filled {
+    color: var(--text);
+    background: linear-gradient(180deg, #ffffff 0%, #f0dfe6 55%, #d8bfd8 100%);
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 40px rgba(255,175,205,0.35)) drop-shadow(0 0 90px rgba(255,175,205,0.15));
+  }
+
+  .hero__side-line {
+    font-family: 'Bricolage Grotesque', 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: clamp(18px, 2.2vw, 30px);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--text);
+    margin: 0;
+    max-width: 18ch;
+  }
+  .hero__side--past .hero__side-line { color: rgba(255,255,255,0.62); font-weight: 400; }
+  .hero__side-line b {
+    font-weight: 800;
+    background: linear-gradient(180deg, #fff 0%, #d8bfd8 100%);
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero__side--past .hero__side-line b { color: rgba(255,255,255,0.9); -webkit-text-fill-color: rgba(255,255,255,0.9); background: none; font-weight: 700; }
+
+  .hero__stats {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+  .hero__stats li {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero__side--past .hero__stats li { flex-direction: row-reverse; }
+  .hero__stats b {
+    color: var(--text);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .hero__stats-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,175,205,0.9);
+    box-shadow: 0 0 10px rgba(255,175,205,0.7);
+    animation: pulse 2s ease infinite;
+    flex-shrink: 0;
+  }
+
+  .hero__cta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 16px;
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  /* — центральный шпиль между блоками — */
+  .hero__spine {
+    align-self: stretch;
+    width: 64px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) .55s forwards;
+  }
+  .hero__spine::before {
+    content: '';
+    position: absolute;
+    top: 12%;
+    bottom: -800px; /* уходит за границы hero — клипается overflow: hidden */
+    left: 50%;
+    width: 1px;
+    transform: translateX(-0.5px);
+    background: repeating-linear-gradient(
+      180deg,
+      rgba(255,175,205,0.55) 0 4px,
+      transparent 4px 14px
+    );
+    opacity: 0.7;
+  }
+  .hero__spine-node {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: #0a0a0a;
+    border: 1px solid rgba(255,175,205,0.55);
+    color: rgba(255,175,205,0.95);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 20px;
+    box-shadow:
+      0 0 0 6px #0a0a0a,
+      0 0 30px rgba(255,175,205,0.35),
+      inset 0 0 12px rgba(255,175,205,0.08);
+  }
+
+  /* адаптив: на мобиле сплит превращается в вертикальный «1.0 ↓ 2.0» */
+  @media (max-width: 900px) {
+    .hero__inner { gap: 30px; }
+    .hero__brandline {
+      justify-content: center;
+      gap: 16px;
+    }
+    .hero__brandline .hero__mark-tag { display: none; }
+    .hero__split {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+      min-height: 0;
+      gap: 6px;
+    }
+    .hero__side {
+      padding: 16px 10px;
+      align-items: center !important;
+      text-align: center !important;
+      gap: 14px;
+    }
+    .hero__side--past .hero__stats li,
+    .hero__side--future .hero__stats li { flex-direction: row; }
+    .hero__side-line { max-width: 22ch; }
+    .hero__spine {
+      width: auto;
+      height: 64px;
+      min-height: 64px;
+    }
+    .hero__spine::before {
+      top: 6px; bottom: 6px;
+    }
+    .hero__spine-node {
+      width: 44px; height: 44px;
+      font-size: 17px;
+      transform: rotate(90deg);
+    }
+    .hero__cta { justify-content: center; gap: 10px; }
+    .hero__side-kicker::before,
+    .hero__side-kicker::after { display: none !important; }
+    .btn { padding: 14px 22px; font-size: 15px; }
+  }
+  @media (max-width: 540px) {
+    .hero { padding: 60px 0 40px; }
+    .hero__side-num { font-size: clamp(96px, 28vw, 150px); }
+    .hero__side-line { font-size: clamp(15px, 4.6vw, 20px); max-width: 26ch; }
+    .hero__stats { font-size: 10.5px; gap: 6px; }
+    .hero__stats li { line-height: 1.3; }
+    .hero__side-kicker { font-size: 10px; letter-spacing: 0.2em; }
+    .hero__mark { font-size: 17px; }
+    .hero__brandline { gap: 10px; }
+    .btn { padding: 12px 18px; font-size: 14px; gap: 8px; }
+  }
+
   .btn {
     display: inline-flex;
     align-items: center;
@@ -831,6 +1123,31 @@
     padding: 140px 0;
     border-top: 1px solid var(--line);
   }
+
+  /* сквозная «нить» — соединяет hero и секцию «in the empire» */
+  #inside {
+    position: relative;
+  }
+  #inside::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -60px;       /* перекрываем разрыв между hero и секцией */
+    bottom: 0;
+    width: 1px;
+    transform: translateX(-0.5px);
+    background: repeating-linear-gradient(
+      180deg,
+      rgba(255,175,205,0.45) 0 4px,
+      transparent 4px 14px
+    );
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+  }
+  #inside > .container { position: relative; z-index: 1; }
+  #inside .empire__bonus { position: relative; z-index: 2; }
+  @media (max-width: 900px) { #inside::before { display: none; } }
   .section--tight { padding-top: 60px; border-top: 0; }
   @media (max-width: 720px) {
     .section { padding: 90px 0; }
@@ -876,6 +1193,697 @@
     display: inline-block;
   }
 
+
+  /* ---------- EMPIRE FEATURES (In the Empire) ---------- */
+  .empire__lead {
+    color: #b8b8b8;
+    font-size: clamp(16px, 1.6vw, 19px);
+    line-height: 1.6;
+    max-width: 720px;
+    margin: 0 0 48px;
+  }
+  .empire__lead strong { color: var(--text); font-weight: 700; }
+
+  .empire__stack {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 90px;
+    padding: 20px 0 30px;
+    z-index: 1;
+  }
+  /* стек-шпиль убран — сквозная нить теперь на #inside::before */
+  .empire__stack::before { display: none; }
+  @media (max-width: 900px) {
+    .empire__stack { gap: 56px; padding: 10px 0 20px; }
+  }
+
+  .empire__row {
+    position: relative;
+    border: none;
+    background: transparent;
+    padding: 30px 0;
+    border-radius: 0;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    overflow: visible;
+    isolation: isolate;
+    z-index: 1;
+  }
+  /* призрачная большая цифра — идентичность ряда, а не ещё одна рамка */
+  .empire__row::before {
+    content: attr(data-num);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-52%);
+    font-family: 'Bricolage Grotesque', 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: clamp(140px, 20vw, 260px);
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,175,205,0.13);
+    text-shadow: 0 0 40px rgba(255,175,205,0.05);
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .empire__row:not(.empire__row--flip)::before {
+    right: 4%;
+  }
+  .empire__row--flip::before {
+    left: 4%;
+  }
+  /* маленький «нод» на шпиле возле каждого ряда */
+  .empire__row::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #0a0a0a;
+    border: 1px solid rgba(255,175,205,0.6);
+    box-shadow:
+      0 0 0 4px rgba(10,10,10,1),
+      0 0 24px rgba(255,175,205,0.35);
+    z-index: 2;
+    pointer-events: none;
+  }
+  @media (max-width: 900px) {
+    .empire__row::after { display: none; }
+    .empire__row::before {
+      font-size: clamp(90px, 30vw, 160px);
+      right: auto !important;
+      left: auto !important;
+      top: -10px;
+      transform: none;
+      opacity: 0.9;
+    }
+  }
+  .empire__row > * { position: relative; z-index: 1; }
+  .empire__row--flip { flex-direction: row-reverse; }
+
+  @media (max-width: 900px) {
+    .empire__row {
+      flex-direction: column !important;
+      padding: 30px 0 0;
+      gap: 24px;
+    }
+  }
+
+  /* левая колонка — mockup-визуал */
+  .empire__row-visual {
+    position: relative;
+    flex: 1 1 50%;
+    min-height: 380px;
+    padding: 0 60px 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .empire__row--flip .empire__row-visual { padding: 0 20px 0 60px; }
+  /* мягкий «подсвет» под mockup — устройство стоит на сцене */
+  .empire__row-visual::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    width: 78%;
+    height: 60px;
+    transform: translateX(-50%);
+    background: radial-gradient(60% 100% at 50% 50%, rgba(255,175,205,0.16) 0%, transparent 70%);
+    filter: blur(6px);
+    z-index: 0;
+    pointer-events: none;
+  }
+  @media (max-width: 900px) {
+    .empire__row-visual,
+    .empire__row--flip .empire__row-visual { min-height: 300px; padding: 20px 26px 0; }
+    .empire__row-visual::after { display: none; }
+  }
+
+  .empire__mockup {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  /* обёртка всей плитки — device-frame со скриншотом */
+  .empire__tile {
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+    transition: transform .55s cubic-bezier(.2,.8,.2,1);
+    filter: drop-shadow(0 40px 60px rgba(0,0,0,0.75));
+    border-radius: 22px;
+  }
+  .empire__row:hover .empire__tile { transform: translateY(-6px); }
+  .empire__tile-mini { display: none; }
+
+  /* device-frame — стеклянная рамка вокруг скриншота */
+  .empire__frame {
+    position: relative;
+    border-radius: 22px;
+    padding: 10px 10px 12px;
+    background:
+      linear-gradient(180deg, rgba(28,28,30,0.98) 0%, rgba(14,14,16,0.98) 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      inset 0 0 0 1px rgba(0,0,0,0.4);
+    overflow: hidden;
+  }
+  /* мягкий блик по верхнему краю */
+  .empire__frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+      radial-gradient(80% 55% at 50% 0%, rgba(255,175,205,0.10), transparent 70%);
+    pointer-events: none;
+  }
+
+  /* хром бар с точками, как окно приложения */
+  .empire__frame-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 4px 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .empire__frame-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.16);
+  }
+  .empire__frame-dot:nth-child(1) { background: rgba(255,150,190,0.55); }
+  .empire__frame-dot:nth-child(2) { background: rgba(216,191,216,0.4); }
+  .empire__frame-dot:nth-child(3) { background: rgba(255,255,255,0.22); }
+  .empire__frame-tag {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.42);
+    padding: 4px 9px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 100px;
+    background: rgba(0,0,0,0.3);
+  }
+
+  /* экран, куда ложится скрин */
+  .empire__frame-screen {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #050505;
+    border: 1px solid rgba(255,255,255,0.06);
+    z-index: 1;
+  }
+  .empire__frame-screen img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 0%;
+    background: transparent;
+  }
+
+  /* карусель скринов внутри рамки */
+  .empire__slides {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .empire__slides img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 0%;
+    opacity: 0;
+    transition: opacity 550ms ease;
+  }
+  .empire__slides img.is-active { opacity: 1; }
+  .empire__slide-dots {
+    position: absolute;
+    left: 0; right: 0; bottom: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .empire__slide-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.25);
+    transition: background 220ms ease, width 220ms ease;
+  }
+  .empire__slide-dot.is-active {
+    background: rgba(255,175,205,0.9);
+    width: 16px;
+  }
+  /* если карусель заполнена — прячем placeholder */
+  .empire__frame-screen.has-slides .empire__frame-placeholder {
+    display: none;
+  }
+
+  /* ---------- BONUS: гайды на клиентов (unboxed + мини-мокапы) ---------- */
+  .empire__bonus {
+    position: relative;
+    margin-top: 80px;
+    padding: 30px 0 20px;
+    border: none;
+    border-radius: 0;
+    background: none;
+    overflow: visible;
+  }
+  /* тонкая пунктирная разделительная линия сверху — «сцена» блока */
+  .empire__bonus::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: min(280px, 40%);
+    height: 1px;
+    background: repeating-linear-gradient(90deg, rgba(255,175,205,0.55) 0 4px, transparent 4px 10px);
+    opacity: 0.55;
+  }
+  .empire__bonus-head {
+    position: relative;
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .empire__bonus-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border: 1px dashed rgba(255,175,205,0.45);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,175,205,0.85);
+    background: rgba(255,175,205,0.06);
+  }
+  .empire__bonus-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 100px;
+    background: rgba(255,175,205,0.85);
+    box-shadow: 0 0 10px rgba(255,175,205,0.7);
+  }
+  .empire__bonus-title {
+    font-family: 'Bricolage Grotesque', 'Manrope', sans-serif;
+    font-size: clamp(20px, 2.4vw, 26px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: #fff;
+    margin: 0;
+  }
+  .empire__bonus-title b {
+    background: linear-gradient(180deg, #fff 0%, #d8bfd8 100%);
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+  }
+  .empire__bonus-lead {
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.6);
+    margin: 0;
+    max-width: 52ch;
+  }
+  .empire__bonus-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 26px 22px;
+  }
+  @media (max-width: 640px) {
+    .empire__bonus { margin-top: 56px; padding: 24px 0 16px; }
+    .empire__bonus-grid { grid-template-columns: repeat(2, 1fr); gap: 18px 14px; }
+  }
+
+  /* — Гайд-плитка как мини-мокап устройства — */
+  .empire__guide {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+    transition: transform 350ms cubic-bezier(.2,.8,.2,1);
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.55));
+  }
+  .empire__guide:hover { transform: translateY(-5px); }
+
+  /* каждый второй ряд слегка сдвигается вниз — «стойка гайдов», а не сетка */
+  .empire__guide:nth-child(2n) { transform: translateY(14px); }
+  .empire__guide:nth-child(2n):hover { transform: translateY(9px); }
+  @media (max-width: 640px) {
+    .empire__guide:nth-child(2n) { transform: translateY(0); }
+    .empire__guide:nth-child(2n):hover { transform: translateY(-5px); }
+  }
+
+  /* «корпус» устройства */
+  .empire__guide-frame {
+    position: relative;
+    padding: 8px 8px 10px;
+    border-radius: 18px;
+    background:
+      linear-gradient(180deg, rgba(28,28,30,0.98) 0%, rgba(14,14,16,0.98) 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      inset 0 0 0 1px rgba(0,0,0,0.4);
+    overflow: hidden;
+    transition: border-color 350ms ease;
+  }
+  .empire__guide:hover .empire__guide-frame { border-color: rgba(255,175,205,0.35); }
+  /* мягкий блик по верху */
+  .empire__guide-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(80% 55% at 50% 0%, rgba(255,175,205,0.08), transparent 70%);
+    pointer-events: none;
+  }
+
+  /* chrome-бар с 3 точками — как у больших карточек */
+  .empire__guide-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 4px 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .empire__guide-bar span {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.16);
+  }
+  .empire__guide-bar span:nth-child(1) { background: rgba(255,150,190,0.55); }
+  .empire__guide-bar span:nth-child(2) { background: rgba(216,191,216,0.4); }
+  .empire__guide-bar span:nth-child(3) { background: rgba(255,255,255,0.22); }
+
+  /* сам экран */
+  .empire__guide-screen {
+    position: relative;
+    aspect-ratio: 5 / 7;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #050505;
+  }
+  .empire__guide-screen img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 0%;
+    transition: transform 500ms cubic-bezier(.2,.8,.2,1);
+  }
+  .empire__guide:hover .empire__guide-screen img { transform: scale(1.03); }
+
+  /* подпись под мокапом — «гайд · 01» */
+  .empire__guide-num {
+    display: inline-flex;
+    align-self: center;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+  }
+  .empire__guide-num::before,
+  .empire__guide-num::after {
+    content: '';
+    width: 12px;
+    height: 1px;
+    background: rgba(255,175,205,0.4);
+  }
+  .empire__guide:hover .empire__guide-num { color: rgba(255,175,205,0.9); }
+
+  /* fallback-плитка (когда файла нет) — тот же корпус, внутри текст */
+  .empire__guide-fallback {
+    position: relative;
+    aspect-ratio: 5 / 7;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px;
+    text-align: center;
+    background:
+      radial-gradient(120% 90% at 50% 0%, rgba(255,175,205,0.18) 0%, transparent 55%),
+      linear-gradient(180deg, #141014 0%, #060406 100%);
+  }
+  .empire__guide-emoji {
+    font-size: 26px;
+    filter: drop-shadow(0 4px 14px rgba(255,150,190,0.35));
+  }
+  .empire__guide-name {
+    font-family: 'Bricolage Grotesque', 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.55);
+    text-transform: uppercase;
+  }
+  .empire__guide-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,175,205,0.55);
+    padding: 3px 8px;
+    border: 1px dashed rgba(255,175,205,0.35);
+    border-radius: 100px;
+  }
+
+  /* placeholder — виден если скрин ещё не загрузился */
+  .empire__frame-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 30px;
+    text-align: center;
+    background:
+      radial-gradient(120% 90% at 50% 0%, rgba(255,175,205,0.22) 0%, transparent 55%),
+      radial-gradient(120% 90% at 50% 100%, rgba(216,191,216,0.14) 0%, transparent 55%),
+      linear-gradient(180deg, #141014 0%, #060406 100%);
+  }
+  .empire__frame-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px);
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 90%);
+    pointer-events: none;
+  }
+  .empire__frame-emoji {
+    font-size: 44px;
+    filter: drop-shadow(0 6px 20px rgba(255,150,190,0.35));
+    z-index: 1;
+  }
+  .empire__frame-word {
+    font-family: 'Bricolage Grotesque', 'Manrope', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.55);
+    text-shadow: 0 0 24px rgba(255,175,205,0.15);
+    z-index: 1;
+  }
+  .empire__frame-word--filled {
+    -webkit-text-stroke: 0;
+    background: linear-gradient(180deg, #fff 0%, #d8bfd8 100%);
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .empire__frame-caption {
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.55);
+    max-width: 28ch;
+    z-index: 1;
+  }
+  .empire__frame-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,175,205,0.55);
+    padding: 5px 10px;
+    border: 1px dashed rgba(255,175,205,0.35);
+    border-radius: 100px;
+    z-index: 1;
+  }
+
+  /* если img загрузился и не «упал» — прячем placeholder */
+  .empire__frame-screen img:not([data-broken]) ~ .empire__frame-placeholder {
+    display: none;
+  }
+
+  /* правая колонка — контент */
+  .empire__row-content {
+    flex: 1 1 50%;
+    padding: 0 20px 0 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    justify-content: center;
+  }
+  .empire__row--flip .empire__row-content { padding: 0 60px 0 20px; }
+  @media (max-width: 900px) {
+    .empire__row-content, .empire__row--flip .empire__row-content {
+      padding: 4px 4px 10px;
+      width: 100%;
+    }
+  }
+  .empire__row-head {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .empire__row-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .empire__row-num::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: rgba(216,191,216,0.4);
+    display: inline-block;
+  }
+  .empire__row-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(22px, 2.4vw, 28px);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    line-height: 1.25;
+    margin: 0;
+    max-width: 22ch;
+  }
+  .empire__row-title b { color: rgba(255,175,205,0.95); font-weight: 700; }
+
+  .empire__checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    background: none;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px dashed rgba(255,175,205,0.14);
+  }
+  .empire__checklist li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 14px;
+    align-items: start;
+    color: #d5d5d5;
+    font-size: 14px;
+    line-height: 1.55;
+    padding: 14px 0;
+    border-bottom: 1px dashed rgba(255,175,205,0.14);
+    transition: color .3s ease, transform .3s ease;
+  }
+  /* тонкий подсвеченный отступ слева при hover — «отмеченный» пункт */
+  .empire__checklist li::before {
+    content: '';
+    position: absolute;
+    left: -14px;
+    top: 50%;
+    transform: translateY(-50%) scaleY(0);
+    transform-origin: center;
+    width: 2px;
+    height: 60%;
+    background: linear-gradient(180deg, rgba(255,175,205,0.9), rgba(216,191,216,0.4));
+    transition: transform .35s cubic-bezier(.2,.8,.2,1);
+    border-radius: 2px;
+  }
+  .empire__checklist li:hover { color: #fff; transform: translateX(3px); }
+  .empire__checklist li:hover::before { transform: translateY(-50%) scaleY(1); }
+  .empire__checklist li strong { color: #fff; font-weight: 600; }
+
+  .empire__check {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(216,191,216,0.35);
+    background: rgba(216,191,216,0.06);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,175,205,0.95);
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: background .3s ease, box-shadow .3s ease, border-color .3s ease;
+  }
+  .empire__checklist li:hover .empire__check {
+    background: rgba(255,150,190,0.16);
+    border-color: rgba(255,175,205,0.7);
+    box-shadow: 0 0 12px rgba(255,150,190,0.35);
+  }
+  .empire__check svg { width: 10px; height: 10px; stroke-width: 3; }
+
+  @media (max-width: 540px) {
+    .empire__row-visual,
+    .empire__row--flip .empire__row-visual { padding: 20px 6px 0; }
+    .empire__row-content, .empire__row--flip .empire__row-content { padding: 4px 4px 10px; }
+    .empire__mockup { max-width: 290px; }
+  }
 
   /* ---------- TRACK (Что внутри 2.0 — вертикальный индекс-аккордеон) ---------- */
   .track {
@@ -3764,57 +4772,200 @@
 
   <div class="container">
     <div class="hero__inner">
-      <a href="#contact" class="season" aria-label="Открытие 2 сезона — скоро">
-        <span class="season__stamp">
-          <span class="season__stamp-num">2</span>
-          <span class="season__stamp-label">season</span>
-        </span>
-        <span class="season__body">
-          <span class="season__title">
-            <b>Открытие 2 сезона</b>
-            <span class="season__divider"></span>
-          </span>
-          <span class="season__sub">Wake Up · скоро открытие</span>
-        </span>
-        <span class="season__edge" aria-hidden="true"></span>
-      </a>
 
-      <h1 class="hero__name">
-        <span class="row1">WAKE UP</span>
-        <span class="row2">EMPIRE<span class="ver">2.0</span></span>
-      </h1>
-
-      <div class="hero__sub">
-        <p class="hero__claim">
-          <span class="hero__claim-line">
-            <span class="hero__claim-tag">1.0</span>
-            был стандартом и собрал сильных
+      <!-- brand mark + season badge -->
+      <div class="hero__brandline">
+        <a href="#top" class="hero__mark" aria-label="Wake Up Empire">
+          <span class="hero__mark-dot" aria-hidden="true"></span>
+          <span>Wake Up Empire</span>
+          <span class="hero__mark-tag">season 02</span>
+        </a>
+        <a href="#contact" class="season" aria-label="Открытие 2 сезона — скоро">
+          <span class="season__stamp">
+            <span class="season__stamp-num">2</span>
+            <span class="season__stamp-label">season</span>
           </span>
-          <span class="hero__claim-line hero__claim-line--punch">
-            <span class="hero__claim-tag hero__claim-tag--white">2.0</span>
-            становится легендой
+          <span class="season__body">
+            <span class="season__title">
+              <b>Открытие 2 сезона</b>
+              <span class="season__divider"></span>
+            </span>
+            <span class="season__sub">Wake Up · скоро открытие</span>
           </span>
-        </p>
-        <p class="hero__sub-text">
-          Wake Up 1.0 уже выпускал людей <strong>на сотни тысяч в месяц</strong> — это его планка. 2.0 поднимает её выше: программа, наставничество и окружение, которые превращают «получилось» в правило, а не исключение.
-        </p>
+          <span class="season__edge" aria-hidden="true"></span>
+        </a>
       </div>
 
-      <div class="hero__cta">
-        <a href="#pricing" class="btn">
-          Перейти к тарифам
-          <span class="btn__arrow">↓</span>
-        </a>
-        <a href="#program" class="btn btn--ghost">
-          Что внутри
-          <span class="btn__arrow">↓</span>
-        </a>
+      <!-- split narrative: 1.0 → 2.0 -->
+      <div class="hero__split">
+
+        <!-- LEFT: было -->
+        <div class="hero__side hero__side--past">
+          <span class="hero__side-kicker">season 01 · было</span>
+          <span class="hero__side-num hero__side-num--ghost" aria-hidden="true">1.0</span>
+          <h1 class="hero__side-line">Стандарт, который <b>собрал сильных</b></h1>
+          <ul class="hero__stats">
+            <li><b>150+</b>&nbsp; выпускников</li>
+            <li><b>₽ сотни тысяч</b>&nbsp; в месяц у топов</li>
+            <li><b>1&nbsp;сезон</b>&nbsp; закрытый доступ</li>
+          </ul>
+        </div>
+
+        <!-- SPINE: соединитель -->
+        <div class="hero__spine" aria-hidden="true">
+          <span class="hero__spine-node">→</span>
+        </div>
+
+        <!-- RIGHT: станет -->
+        <div class="hero__side hero__side--future">
+          <span class="hero__side-kicker">season 02 · станет</span>
+          <span class="hero__side-num hero__side-num--filled">2.0</span>
+          <h1 class="hero__side-line">Экосистема, которая <b>делает результат правилом</b></h1>
+          <ul class="hero__stats">
+            <li><span class="hero__stats-dot" aria-hidden="true"></span><b>Открытие</b>&nbsp; скоро</li>
+            <li><b>Программа</b>&nbsp; · наставничество · окружение</li>
+          </ul>
+          <div class="hero__cta">
+            <a href="#pricing" class="btn">
+              Перейти к тарифам
+              <span class="btn__arrow">↓</span>
+            </a>
+            <a href="#program" class="btn btn--ghost">
+              Что внутри
+              <span class="btn__arrow">↓</span>
+            </a>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 </header>
 
+<section class="section" id="inside">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__kicker">in the empire</span>
+      <h2 class="section__title">Что ты получишь</h2>
+    </div>
 
+    <p class="empire__lead reveal">
+      Доступ к <strong>лучшим направлениям 21 века</strong>. Больше не придётся задавать себе вопрос «ну где же лежат деньги».
+    </p>
+
+    <div class="empire__stack">
+
+      <!-- 01: Пошаговые планы -->
+      <article class="empire__row reveal" data-num="01">
+        <div class="empire__row-visual" aria-hidden="true">
+          <div class="empire__mockup">
+            <div class="empire__tile">
+              <div class="empire__frame">
+                <div class="empire__frame-bar">
+                  <span class="empire__frame-dot"></span>
+                  <span class="empire__frame-dot"></span>
+                  <span class="empire__frame-dot"></span>
+                  <span class="empire__frame-tag">01 · money</span>
+                </div>
+                <div class="empire__frame-screen">
+                  <img src="empire-money.jpg" alt="Скрин закрытого гайда «Пошаговые планы»" loading="lazy" data-empire-shot>
+                  <div class="empire__frame-placeholder">
+                    <span class="empire__frame-emoji">📌</span>
+                    <span class="empire__frame-word empire__frame-word--filled">MONEY</span>
+                    <span class="empire__frame-caption">Пошаговый план: с 0 до сотен тысяч на продюсировании</span>
+                    <span class="empire__frame-hint">screenshot · soon</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="empire__row-content">
+          <div class="empire__row-head">
+            <span class="empire__row-num">01 · план</span>
+            <h3 class="empire__row-title">Пошаговые планы <b>по каждому направлению</b></h3>
+          </div>
+          <ul class="empire__checklist">
+            <li>
+              <span class="empire__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
+              <span>С <strong>полного нуля</strong> до сотен тысяч — без пропущенных шагов и воды</span>
+            </li>
+            <li>
+              <span class="empire__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
+              <span>Каждая ниша разобрана как <strong>отдельная траектория</strong>, а не набор случайных советов</span>
+            </li>
+            <li>
+              <span class="empire__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
+              <span>Работает и для новичка, и для того, кто уже <strong>делает деньги</strong></span>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 02: Связь с Федонко -->
+      <article class="empire__row empire__row--flip reveal delay-1" data-num="02">
+        <div class="empire__row-visual" aria-hidden="true">
+          <div class="empire__mockup">
+            <div class="empire__tile">
+              <div class="empire__frame">
+                <div class="empire__frame-bar">
+                  <span class="empire__frame-dot"></span>
+                  <span class="empire__frame-dot"></span>
+                  <span class="empire__frame-dot"></span>
+                  <span class="empire__frame-tag">02 · focus</span>
+                </div>
+                <div class="empire__frame-screen">
+                  <img src="empire-focus.jpg" alt="Скрин закрытого чата и разборов" loading="lazy" data-empire-shot>
+                  <div class="empire__frame-placeholder">
+                    <span class="empire__frame-emoji">💬</span>
+                    <span class="empire__frame-word empire__frame-word--filled">FOCUS</span>
+                    <span class="empire__frame-caption">Открытый ЛС, живые эфиры и сильное окружение — каждую неделю</span>
+                    <span class="empire__frame-hint">screenshot · soon</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="empire__row-content">
+          <div class="empire__row-head">
+            <span class="empire__row-num">02 · связь</span>
+            <h3 class="empire__row-title">Постоянная связь <b>с Федонко</b></h3>
+          </div>
+          <ul class="empire__checklist">
+            <li>
+              <span class="empire__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
+              <span>Открытый <strong>ЛС</strong> — вопросы и непонимания решаются сразу же</span>
+            </li>
+            <li>
+              <span class="empire__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
+              <span>Живые <strong>эфиры и разборы</strong> каждую неделю</span>
+            </li>
+            <li>
+              <span class="empire__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
+              <span>Сильное <strong>окружение</strong>, в котором нельзя стоять на месте</span>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Бонус: гайды на поиск клиентов -->
+    <div class="empire__bonus reveal" data-empire-guides data-empire-prefix="empire-clients-" data-empire-max="8">
+      <div class="empire__bonus-head">
+        <span class="empire__bonus-badge">
+          <span class="empire__bonus-badge-dot" aria-hidden="true"></span>
+          <span>bonus · внутри блоков</span>
+        </span>
+        <h3 class="empire__bonus-title">Плюсом к каждому блоку — <b>гайды на поиск клиентов</b></h3>
+        <p class="empire__bonus-lead">Скрипты, воронки, готовые офферы для чеков 30–100к ₽. Уже внутри MONEY и FOCUS — без отдельной покупки.</p>
+      </div>
+      <div class="empire__bonus-grid"></div>
+    </div>
+
+  </div>
+</section>
 
 <section class="section" id="program">
   <div class="container">
@@ -4962,6 +6113,153 @@
     img.addEventListener('error', hide, { once: true });
     img.addEventListener('load', check, { once: true });
     if (img.complete) check();
+  });
+
+  // ---------- EMPIRE SCREENSHOTS FALLBACK ----------
+  // если скрин не найден — прячем img и оставляем красивый placeholder
+  document.querySelectorAll('img[data-empire-shot]').forEach((img) => {
+    img.loading = 'eager';
+    img.decoding = 'async';
+    const markBroken = () => {
+      img.setAttribute('data-broken', '');
+      img.style.display = 'none';
+    };
+    const check = () => {
+      if (img.complete && (img.naturalWidth === 0 || img.naturalHeight === 0)) markBroken();
+    };
+    img.addEventListener('error', markBroken, { once: true });
+    img.addEventListener('load', check, { once: true });
+    if (img.complete) check();
+  });
+
+  // ---------- EMPIRE GUIDES GRID (бонус — гайды на клиентов) ----------
+  document.querySelectorAll('[data-empire-guides]').forEach((wrap) => {
+    const grid     = wrap.querySelector('.empire__bonus-grid');
+    const prefix   = wrap.getAttribute('data-empire-prefix') || '';
+    const maxCount = parseInt(wrap.getAttribute('data-empire-max') || '8', 10);
+    const exts     = ['jpg', 'jpeg', 'png', 'webp'];
+    if (!grid || !prefix) return;
+
+    const probe = (src) => new Promise((resolve) => {
+      const t = new Image();
+      t.onload  = () => resolve({ ok: t.naturalWidth > 0 && t.naturalHeight > 0, src });
+      t.onerror = () => resolve({ ok: false, src });
+      t.src = src;
+    });
+
+    const placeholder = (n) => {
+      const fig = document.createElement('figure');
+      fig.className = 'empire__guide';
+      fig.innerHTML = `
+        <div class="empire__guide-frame">
+          <div class="empire__guide-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="empire__guide-fallback">
+            <span class="empire__guide-emoji">💸</span>
+            <span class="empire__guide-name">Clients</span>
+            <span class="empire__guide-hint">screenshot · soon</span>
+          </div>
+        </div>
+        <span class="empire__guide-num">гайд · 0${n}</span>`;
+      return fig;
+    };
+
+    (async () => {
+      const found = [];
+      for (let n = 1; n <= maxCount; n++) {
+        let hit = null;
+        for (const ext of exts) {
+          const r = await probe(`${prefix}${n}.${ext}`);
+          if (r.ok) { hit = r.src; break; }
+        }
+        if (hit) found.push({ src: hit, n });
+        else if (n > 1) break;
+      }
+
+      if (!found.length) {
+        // пока скринов нет — 4 плейсхолдера чтобы блок не был пустым
+        for (let i = 1; i <= 4; i++) grid.appendChild(placeholder(i));
+        return;
+      }
+
+      found.forEach(({ src, n }) => {
+        const fig = document.createElement('figure');
+        fig.className = 'empire__guide';
+        const num = String(n).padStart(2, '0');
+        fig.innerHTML = `
+          <div class="empire__guide-frame">
+            <div class="empire__guide-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="empire__guide-screen">
+              <img src="${src}" alt="Скрин гайда «Поиск клиентов» ${num}" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <span class="empire__guide-num">гайд · ${num}</span>`;
+        grid.appendChild(fig);
+      });
+    })();
+  });
+
+  // ---------- EMPIRE CAROUSEL (для карточки CLIENTS и т.п.) ----------
+  document.querySelectorAll('[data-empire-carousel]').forEach((screen) => {
+    const prefix   = screen.getAttribute('data-empire-prefix') || '';
+    const maxCount = parseInt(screen.getAttribute('data-empire-max') || '8', 10);
+    const exts     = ['jpg', 'jpeg', 'png', 'webp'];
+    const slides   = screen.querySelector('.empire__slides');
+    const dotsWrap = screen.querySelector('.empire__slide-dots');
+    if (!slides || !prefix) return;
+
+    const probe = (src) => new Promise((resolve) => {
+      const t = new Image();
+      t.onload  = () => resolve({ ok: t.naturalWidth > 0 && t.naturalHeight > 0, src });
+      t.onerror = () => resolve({ ok: false, src });
+      t.src = src;
+    });
+
+    (async () => {
+      const found = [];
+      for (let n = 1; n <= maxCount; n++) {
+        let hit = null;
+        for (const ext of exts) {
+          const r = await probe(`${prefix}${n}.${ext}`);
+          if (r.ok) { hit = r.src; break; }
+        }
+        if (hit) found.push(hit);
+        else if (n > 1) break; // разрыв нумерации — стоп
+      }
+      if (!found.length) return; // placeholder остаётся
+
+      found.forEach((src, i) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = '';
+        img.loading = 'eager';
+        img.decoding = 'async';
+        if (i === 0) img.classList.add('is-active');
+        slides.appendChild(img);
+        if (dotsWrap && found.length > 1) {
+          const dot = document.createElement('span');
+          dot.className = 'empire__slide-dot' + (i === 0 ? ' is-active' : '');
+          dotsWrap.appendChild(dot);
+        }
+      });
+      screen.classList.add('has-slides');
+
+      if (found.length < 2) return;
+
+      const imgs = slides.querySelectorAll('img');
+      const dots = dotsWrap ? dotsWrap.querySelectorAll('.empire__slide-dot') : [];
+      let idx = 0;
+      const step = () => {
+        imgs[idx].classList.remove('is-active');
+        if (dots[idx]) dots[idx].classList.remove('is-active');
+        idx = (idx + 1) % imgs.length;
+        imgs[idx].classList.add('is-active');
+        if (dots[idx]) dots[idx].classList.add('is-active');
+      };
+      let timer = setInterval(step, 3500);
+      // пауза при наведении
+      screen.addEventListener('mouseenter', () => { clearInterval(timer); timer = null; });
+      screen.addEventListener('mouseleave', () => { if (!timer) timer = setInterval(step, 3500); });
+    })();
   });
 
   // ---------- CASES CAROUSEL ----------
