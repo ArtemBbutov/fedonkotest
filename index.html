@@ -2433,6 +2433,7 @@
     border: 1px solid rgba(255,255,255,.09);
     border-radius: 20px;
     background: rgba(255,255,255,.025);
+    transition: transform .3s ease, border-color .3s ease, background .3s ease, box-shadow .3s ease;
   }
 
   .empire-direction::after {
@@ -2457,10 +2458,26 @@
     padding: .08em .12em .12em;
     line-height: 1;
     letter-spacing: -.035em;
-    opacity: .3;
+    opacity: .52;
     filter:
-      drop-shadow(0 0 12px rgba(255,175,205,.65))
-      drop-shadow(0 0 28px rgba(255,175,205,.28));
+      drop-shadow(0 0 14px rgba(255,175,205,.72))
+      drop-shadow(0 0 32px rgba(255,175,205,.34));
+    transition: opacity .3s ease;
+  }
+
+  @media (hover: hover) {
+    .empire-direction:not(.empire-direction--secret):hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,175,205,.24);
+      background:
+        radial-gradient(circle at 100% 0%, rgba(255,175,205,.09), transparent 44%),
+        rgba(255,255,255,.032);
+      box-shadow: 0 16px 34px rgba(0,0,0,.22), 0 0 24px rgba(255,175,205,.045);
+    }
+
+    .empire-direction:not(.empire-direction--secret):hover::after {
+      opacity: .72;
+    }
   }
 
   .empire-direction__name {
