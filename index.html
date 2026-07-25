@@ -896,7 +896,7 @@
 
   .hero__side-num {
     font-family: 'Bricolage Grotesque', 'Manrope', sans-serif;
-    font-size: clamp(96px, 15vw, 200px);
+    font-size: clamp(82px, 11vw, 150px);
     line-height: 0.82;
     font-weight: 800;
     letter-spacing: -0.055em;
@@ -905,6 +905,105 @@
     max-width: 100%;
     font-variation-settings: "opsz" 96;
   }
+
+  .hero__version {
+    display: flex;
+    align-items: center;
+    gap: clamp(14px, 2vw, 26px);
+    width: 100%;
+  }
+
+  .hero__side--past .hero__version { justify-content: flex-end; }
+  .hero__side--future .hero__version { justify-content: flex-start; }
+
+  .hero__avatar {
+    position: relative;
+    width: clamp(88px, 9vw, 126px);
+    aspect-ratio: 1;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 5px;
+    border-radius: 28px;
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.15);
+    box-shadow: 0 18px 50px rgba(0,0,0,.45);
+    transform: rotate(-4deg);
+  }
+
+  .hero__side--future .hero__avatar {
+    border-color: rgba(255,175,205,.42);
+    box-shadow:
+      0 18px 50px rgba(0,0,0,.45),
+      0 0 38px rgba(255,112,174,.2);
+    transform: rotate(4deg);
+  }
+
+  .hero__avatar::before,
+  .hero__avatar::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .hero__avatar::before {
+    inset: -9px;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 34px;
+    transform: rotate(8deg);
+  }
+
+  .hero__side--future .hero__avatar::before {
+    border-color: rgba(255,175,205,.18);
+    transform: rotate(-9deg);
+  }
+
+  .hero__avatar::after {
+    width: 7px;
+    height: 7px;
+    top: -12px;
+    right: 20%;
+    border-radius: 50%;
+    background: rgba(255,255,255,.6);
+    box-shadow: 0 0 14px currentColor;
+  }
+
+  .hero__side--future .hero__avatar::after {
+    color: #ffafcd;
+    background: #ffafcd;
+  }
+
+  .hero__avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 23px;
+    filter: saturate(.9) contrast(1.05);
+  }
+
+  .hero__avatar-tag {
+    position: absolute;
+    left: 50%;
+    bottom: -12px;
+    transform: translateX(-50%);
+    z-index: 2;
+    padding: 5px 9px;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 999px;
+    background: rgba(8,8,8,.88);
+    backdrop-filter: blur(10px);
+    color: rgba(255,255,255,.7);
+    font: 700 8px/1 'JetBrains Mono', monospace;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .hero__side--future .hero__avatar-tag {
+    color: #ffd5e5;
+    border-color: rgba(255,175,205,.26);
+  }
+
   .hero__side-num--ghost {
     color: transparent;
     -webkit-text-stroke: 1.2px rgba(255,255,255,0.28);
@@ -970,6 +1069,28 @@
     box-shadow: 0 0 10px rgba(255,175,205,0.7);
     animation: pulse 2s ease infinite;
     flex-shrink: 0;
+  }
+
+  .hero__manifest {
+    max-width: 940px;
+    margin: 8px auto 0;
+    padding: 22px 28px 0;
+    border-top: 1px solid rgba(255,255,255,.1);
+    font-family: 'Bricolage Grotesque', 'Manrope', sans-serif;
+    font-size: clamp(18px, 2vw, 27px);
+    line-height: 1.3;
+    letter-spacing: -.02em;
+    text-align: center;
+    color: rgba(255,255,255,.72);
+  }
+
+  .hero__manifest strong {
+    color: #fff;
+    font-weight: 750;
+    background: linear-gradient(90deg, #fff, #e4c7d7);
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .hero__cta {
@@ -1051,6 +1172,7 @@
     }
     .hero__side--past .hero__stats li,
     .hero__side--future .hero__stats li { flex-direction: row; }
+    .hero__version { justify-content: center !important; width: auto; }
     .hero__side-line { max-width: 22ch; }
     .hero__spine {
       width: auto;
@@ -1072,7 +1194,10 @@
   }
   @media (max-width: 540px) {
     .hero { padding: 60px 0 40px; }
-    .hero__side-num { font-size: clamp(96px, 28vw, 150px); }
+    .hero__side-num { font-size: clamp(72px, 22vw, 108px); }
+    .hero__avatar { width: clamp(72px, 21vw, 96px); border-radius: 22px; }
+    .hero__avatar img { border-radius: 17px; }
+    .hero__version { gap: 18px; }
     .hero__side-line { font-size: clamp(15px, 4.6vw, 20px); max-width: 26ch; }
     .hero__stats { font-size: 10.5px; gap: 6px; }
     .hero__stats li { line-height: 1.3; }
@@ -2118,6 +2243,88 @@
     letter-spacing: -0.005em;
     max-width: 720px;
     margin-bottom: 32px;
+  }
+
+  .program__lead p {
+    margin: 0;
+  }
+
+  .program__lead p + p {
+    margin-top: 14px;
+  }
+
+  .program__lead strong {
+    color: #fff;
+    font-weight: 750;
+  }
+
+  .program__guides {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(14px, 2vw, 24px);
+    max-width: 980px;
+    margin-inline: auto;
+  }
+
+  .program__guide {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: #1c1c1c;
+    box-shadow: 0 18px 50px rgba(0,0,0,.32);
+    isolation: isolate;
+    transition: transform .35s ease, box-shadow .35s ease;
+  }
+
+  .program__guide::before {
+    content: '';
+    position: absolute;
+    inset: -45%;
+    z-index: -1;
+    background: radial-gradient(circle, rgba(0,122,255,.22), transparent 55%);
+    opacity: 0;
+    transition: opacity .35s ease;
+  }
+
+  .program__guide img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 542 / 306;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+
+  @media (hover: hover) {
+    .program__guide:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 70px rgba(0,102,255,.2);
+    }
+
+    .program__guide:hover::before {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .hero__manifest {
+      margin-top: 22px;
+      padding: 20px 0 0;
+      font-size: 17px;
+    }
+
+    .program__guides {
+      grid-template-columns: 1fr;
+    }
+
+    .program__guide {
+      border-radius: 18px;
+    }
+
+    .program__guide img {
+      border-radius: 17px;
+    }
   }
   /* ---------- CASES CAROUSEL ---------- */
   :root {
@@ -4802,12 +5009,17 @@
         <!-- LEFT: было -->
         <div class="hero__side hero__side--past">
           <span class="hero__side-kicker">season 01 · было</span>
-          <span class="hero__side-num hero__side-num--ghost" aria-hidden="true">1.0</span>
-          <h1 class="hero__side-line">Стандарт, который <b>собрал сильных</b></h1>
+          <div class="hero__version">
+            <figure class="hero__avatar">
+              <img src="wakeup.jpg" alt="Аватар Wake Up 1.0">
+              <figcaption class="hero__avatar-tag">wakeup · 01</figcaption>
+            </figure>
+            <span class="hero__side-num hero__side-num--ghost" aria-hidden="true">1.0</span>
+          </div>
+          <h1 class="hero__side-line">Сборник информации, который <b>дал многим выпускникам результаты</b></h1>
           <ul class="hero__stats">
-            <li><b>150+</b>&nbsp; выпускников</li>
-            <li><b>₽ сотни тысяч</b>&nbsp; в месяц у топов</li>
-            <li><b>1&nbsp;сезон</b>&nbsp; закрытый доступ</li>
+            <li><b>185+</b>&nbsp; выпускников</li>
+            <li><b>Формат</b>&nbsp; — сборник гайдов</li>
           </ul>
         </div>
 
@@ -4819,11 +5031,17 @@
         <!-- RIGHT: станет -->
         <div class="hero__side hero__side--future">
           <span class="hero__side-kicker">season 02 · станет</span>
-          <span class="hero__side-num hero__side-num--filled">2.0</span>
-          <h1 class="hero__side-line">Экосистема, которая <b>делает результат правилом</b></h1>
+          <div class="hero__version">
+            <span class="hero__side-num hero__side-num--filled">2.0</span>
+            <figure class="hero__avatar">
+              <img src="wakeup2.jpg" alt="Аватар Wake Up Empire 2.0">
+              <figcaption class="hero__avatar-tag">wakeup2 · 02</figcaption>
+            </figure>
+          </div>
+          <h1 class="hero__side-line">Мини-ведение, которое даёт результат <b>за счёт пошаговости и чёткой системы</b></h1>
           <ul class="hero__stats">
-            <li><span class="hero__stats-dot" aria-hidden="true"></span><b>Открытие</b>&nbsp; скоро</li>
-            <li><b>Программа</b>&nbsp; · наставничество · окружение</li>
+            <li><span class="hero__stats-dot" aria-hidden="true"></span><b>Формат</b>&nbsp; — пошаговая система по выходу на первые 100–300.000 р/мес</li>
+            <li><b>История</b>&nbsp; начинается</li>
           </ul>
           <div class="hero__cta">
             <a href="#pricing" class="btn">
@@ -4838,6 +5056,11 @@
         </div>
 
       </div>
+
+      <p class="hero__manifest">
+        Тебе больше не нужно искать «темку». Решение — перед тобой:
+        <strong>пошаговая система от полного нуля до сотен тысяч.</strong>
+      </p>
     </div>
   </div>
 </header>
@@ -4971,14 +5194,26 @@
   <div class="container">
     <div class="section__head">
       <span class="section__kicker">программа сезона 02</span>
-      <h2 class="section__title">Что внутри 2.0</h2>
+      <h2 class="section__title">Что внутри Empire?</h2>
     </div>
 
-    <p class="program__lead reveal">
-      6 направлений, по которым строится результат. Наведи на строку, чтобы раскрыть, что именно ты получишь.
-    </p>
+    <div class="program__lead reveal">
+      <p>8 самых прибыльных направлений. Начиная монтажом, заканчивая секретными нишами, о которых ты узнаешь только после покупки.</p>
+      <p>Главная уникальность в том, что все направления расписаны <strong>ПОШАГОВО</strong> (можно прикрепить фото ниже).</p>
+      <p>Твоя задача — лишь отсмотреть <strong>гайды и пошагово</strong> выйти к первым 100.000 р/мес.</p>
+      <p>Это не просто сборник инфы — это путь.</p>
+    </div>
 
-    <div class="track reveal" id="track">
+    <div class="program__guides reveal" aria-label="Примеры пошаговых гайдов">
+      <figure class="program__guide">
+        <img src="infob.jpg" alt="Гайд «Инфобизнес — 5 шагов»" loading="lazy" decoding="async">
+      </figure>
+      <figure class="program__guide">
+        <img src="prod.jpg" alt="Гайд «Продажи в звонках — 5 шагов»" loading="lazy" decoding="async">
+      </figure>
+    </div>
+
+    <div class="track reveal" id="track" hidden>
 
       <article class="track__row is-open">
         <button class="track__bar" aria-expanded="true">
