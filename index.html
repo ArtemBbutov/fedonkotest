@@ -2488,9 +2488,21 @@
     background:
       linear-gradient(100deg, rgba(255,175,205,.1), transparent 58%),
       rgba(255,255,255,.02);
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
   }
 
   .empire-direction--secret::after { content: 'LOCKED'; }
+
+  @media (hover: hover) {
+    .empire-direction--secret:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,175,205,.32);
+      box-shadow: 0 16px 36px rgba(0,0,0,.25), 0 0 28px rgba(255,175,205,.08);
+    }
+  }
 
   .empire-direction__secret-num {
     color: #ffd5e5;
@@ -5552,13 +5564,13 @@
           </ul>
         </article>
 
-        <article class="empire-direction empire-direction--secret">
+        <a class="empire-direction empire-direction--secret" href="https://t.me/fedonko" target="_blank" rel="noopener" aria-label="Написать Федонко о секретных нишах">
           <span class="empire-direction__secret-num">04–08</span>
           <div>
             <h4 class="empire-direction__name">Секретные ниши</h4>
             <p class="empire-direction__secret-copy">Не для общего обозрения. Узнаешь о них только после входа в Empire.</p>
           </div>
-        </article>
+        </a>
       </div>
     </div>
 
