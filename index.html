@@ -1277,6 +1277,10 @@
     border-top: 1px solid var(--line);
   }
 
+  #program {
+    padding-top: clamp(72px, 8vw, 104px);
+  }
+
   /* сквозная «нить» — соединяет hero и секцию «in the empire» */
   #inside {
     position: relative;
@@ -5283,131 +5287,6 @@
     </div>
   </div>
 </header>
-
-<section class="section" id="inside">
-  <div class="container">
-    <div class="section__head">
-      <span class="section__kicker">in the empire</span>
-      <h2 class="section__title">Что ты получишь</h2>
-    </div>
-
-    <p class="empire__lead reveal">
-      Доступ к <strong>лучшим направлениям 21 века</strong>. Больше не придётся задавать себе вопрос «ну где же лежат деньги».
-    </p>
-
-    <div class="empire__stack">
-
-      <!-- 01: Пошаговые планы -->
-      <article class="empire__row reveal" data-num="01">
-        <div class="empire__row-visual" aria-hidden="true">
-          <div class="empire__mockup">
-            <div class="empire__tile">
-              <div class="empire__frame">
-                <div class="empire__frame-bar">
-                  <span class="empire__frame-dot"></span>
-                  <span class="empire__frame-dot"></span>
-                  <span class="empire__frame-dot"></span>
-                  <span class="empire__frame-tag">01 · money</span>
-                </div>
-                <div class="empire__frame-screen">
-                  <img src="empire-money.jpg" alt="Скрин закрытого гайда «Пошаговые планы»" loading="lazy" data-empire-shot>
-                  <div class="empire__frame-placeholder">
-                    <span class="empire__frame-emoji">📌</span>
-                    <span class="empire__frame-word empire__frame-word--filled">MONEY</span>
-                    <span class="empire__frame-caption">Пошаговый план: с 0 до сотен тысяч на продюсировании</span>
-                    <span class="empire__frame-hint">screenshot · soon</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="empire__row-content">
-          <div class="empire__row-head">
-            <span class="empire__row-num">01 · план</span>
-            <h3 class="empire__row-title">Пошаговые планы <b>по каждому направлению</b></h3>
-          </div>
-          <ul class="empire__checklist">
-            <li>
-              <span class="empire__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
-              <span>С <strong>полного нуля</strong> до сотен тысяч — без пропущенных шагов и воды</span>
-            </li>
-            <li>
-              <span class="empire__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
-              <span>Каждая ниша разобрана как <strong>отдельная траектория</strong>, а не набор случайных советов</span>
-            </li>
-            <li>
-              <span class="empire__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
-              <span>Работает и для новичка, и для того, кто уже <strong>делает деньги</strong></span>
-            </li>
-          </ul>
-        </div>
-      </article>
-
-      <!-- 02: Связь с Федонко -->
-      <article class="empire__row empire__row--flip reveal delay-1" data-num="02">
-        <div class="empire__row-visual" aria-hidden="true">
-          <div class="empire__mockup">
-            <div class="empire__tile">
-              <div class="empire__frame">
-                <div class="empire__frame-bar">
-                  <span class="empire__frame-dot"></span>
-                  <span class="empire__frame-dot"></span>
-                  <span class="empire__frame-dot"></span>
-                  <span class="empire__frame-tag">02 · focus</span>
-                </div>
-                <div class="empire__frame-screen">
-                  <img src="empire-focus.jpg" alt="Скрин закрытого чата и разборов" loading="lazy" data-empire-shot>
-                  <div class="empire__frame-placeholder">
-                    <span class="empire__frame-emoji">💬</span>
-                    <span class="empire__frame-word empire__frame-word--filled">FOCUS</span>
-                    <span class="empire__frame-caption">Открытый ЛС, живые эфиры и сильное окружение — каждую неделю</span>
-                    <span class="empire__frame-hint">screenshot · soon</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="empire__row-content">
-          <div class="empire__row-head">
-            <span class="empire__row-num">02 · связь</span>
-            <h3 class="empire__row-title">Постоянная связь <b>с Федонко</b></h3>
-          </div>
-          <ul class="empire__checklist">
-            <li>
-              <span class="empire__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
-              <span>Открытый <strong>ЛС</strong> — вопросы и непонимания решаются сразу же</span>
-            </li>
-            <li>
-              <span class="empire__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
-              <span>Живые <strong>эфиры и разборы</strong> каждую неделю</span>
-            </li>
-            <li>
-              <span class="empire__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
-              <span>Сильное <strong>окружение</strong>, в котором нельзя стоять на месте</span>
-            </li>
-          </ul>
-        </div>
-      </article>
-
-    </div>
-
-    <!-- Бонус: гайды на поиск клиентов -->
-    <div class="empire__bonus reveal" data-empire-guides data-empire-prefix="empire-clients-" data-empire-max="8">
-      <div class="empire__bonus-head">
-        <span class="empire__bonus-badge">
-          <span class="empire__bonus-badge-dot" aria-hidden="true"></span>
-          <span>bonus · внутри блоков</span>
-        </span>
-        <h3 class="empire__bonus-title">Плюсом к каждому блоку — <b>гайды на поиск клиентов</b></h3>
-        <p class="empire__bonus-lead">Скрипты, воронки, готовые офферы для чеков 30–100к ₽. Уже внутри MONEY и FOCUS — без отдельной покупки.</p>
-      </div>
-      <div class="empire__bonus-grid"></div>
-    </div>
-
-  </div>
-</section>
 
 <section class="section" id="program">
   <div class="container">
