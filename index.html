@@ -2419,24 +2419,65 @@
 
   .vacancy-proof__grid {
     display: grid;
-    grid-template-columns: .82fr 1.18fr;
-    align-items: start;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
   }
 
-  .vacancy-proof__column {
-    display: grid;
-    gap: 14px;
+  .vacancy-proof__shot-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 8.5;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255,175,205,.16);
+    border-radius: 17px;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,175,205,.06), transparent 58%),
+      #151515;
+    box-shadow: 0 10px 26px rgba(0,0,0,.22);
+    cursor: zoom-in;
+    transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+  }
+
+  .vacancy-proof__shot-link::after {
+    content: 'открыть';
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    padding: 6px 9px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 999px;
+    background: rgba(8,8,8,.78);
+    backdrop-filter: blur(8px);
+    color: rgba(255,255,255,.58);
+    font: 700 8px/1 'JetBrains Mono', monospace;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity .25s ease, transform .25s ease;
   }
 
   .vacancy-proof__shot {
     display: block;
     width: 100%;
-    height: auto;
-    border: 1px solid rgba(255,175,205,.18);
-    border-radius: 17px;
-    background: #1d1d1d;
-    box-shadow: 0 12px 30px rgba(0,0,0,.25);
+    height: 100%;
+    object-fit: contain;
+  }
+
+  @media (hover: hover) {
+    .vacancy-proof__shot-link:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,175,205,.34);
+      box-shadow: 0 16px 34px rgba(0,0,0,.28);
+    }
+
+    .vacancy-proof__shot-link:hover::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .program__guides {
@@ -5287,14 +5328,18 @@
         </div>
       </div>
       <div class="vacancy-proof__grid">
-        <div class="vacancy-proof__column">
+        <a class="vacancy-proof__shot-link" href="vak.jpg" target="_blank" rel="noopener" aria-label="Открыть скрин ветки вакансий">
           <img class="vacancy-proof__shot" src="vak.jpg" alt="Ветка «Вакансии — поиск нужных людей»" loading="lazy" decoding="async">
-          <img class="vacancy-proof__shot" src="miros.jpg" alt="Вакансия для монтажёров на постоянную работу" loading="lazy" decoding="async">
-        </div>
-        <div class="vacancy-proof__column">
+        </a>
+        <a class="vacancy-proof__shot-link" href="kir.jpg" target="_blank" rel="noopener" aria-label="Открыть вакансию для монтажёров">
           <img class="vacancy-proof__shot" src="kir.jpg" alt="Поиск монтажёров с опытом работы" loading="lazy" decoding="async">
+        </a>
+        <a class="vacancy-proof__shot-link" href="miros.jpg" target="_blank" rel="noopener" aria-label="Открыть вакансию на постоянную работу">
+          <img class="vacancy-proof__shot" src="miros.jpg" alt="Вакансия для монтажёров на постоянную работу" loading="lazy" decoding="async">
+        </a>
+        <a class="vacancy-proof__shot-link" href="ser.jpg" target="_blank" rel="noopener" aria-label="Открыть вакансию для рассыльщиков">
           <img class="vacancy-proof__shot" src="ser.jpg" alt="Поиск специалистов по рассылкам" loading="lazy" decoding="async">
-        </div>
+        </a>
       </div>
     </div>
 
