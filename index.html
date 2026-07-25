@@ -2446,6 +2446,18 @@
     pointer-events: none;
   }
 
+  .empire-direction:not(.empire-direction--secret)::after {
+    color: transparent;
+    background: linear-gradient(180deg, #ffffff 0%, #f0dfe6 52%, #d8bfd8 100%);
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: .3;
+    filter:
+      drop-shadow(0 0 12px rgba(255,175,205,.65))
+      drop-shadow(0 0 28px rgba(255,175,205,.28));
+  }
+
   .empire-direction__name {
     position: relative;
     z-index: 1;
