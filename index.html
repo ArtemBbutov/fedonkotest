@@ -2376,6 +2376,82 @@
     -webkit-text-fill-color: transparent;
   }
 
+  .vacancy-proof {
+    width: 100%;
+    max-width: 980px;
+    margin: 18px auto 34px;
+    padding: clamp(18px, 2.5vw, 28px);
+    border: 1px solid rgba(255,175,205,.16);
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(255,175,205,.09), transparent 38%),
+      rgba(255,255,255,.018);
+  }
+
+  .vacancy-proof__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+
+  .vacancy-proof__eyebrow {
+    color: rgba(255,175,205,.86);
+    font: 700 9px/1 'JetBrains Mono', monospace;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+  .vacancy-proof__title {
+    margin: 7px 0 0;
+    color: #fff;
+    font: 700 clamp(19px, 2.2vw, 28px)/1.15 'Bricolage Grotesque', sans-serif;
+    letter-spacing: -.02em;
+  }
+
+  .vacancy-proof__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex: 0 0 auto;
+    color: rgba(255,255,255,.58);
+    font: 700 9px/1 'JetBrains Mono', monospace;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .vacancy-proof__status::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ffafcd;
+    box-shadow: 0 0 12px rgba(255,175,205,.7);
+  }
+
+  .vacancy-proof__grid {
+    display: grid;
+    grid-template-columns: .82fr 1.18fr;
+    align-items: start;
+    gap: 14px;
+  }
+
+  .vacancy-proof__column {
+    display: grid;
+    gap: 14px;
+  }
+
+  .vacancy-proof__shot {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(255,175,205,.18);
+    border-radius: 17px;
+    background: #1d1d1d;
+    box-shadow: 0 12px 30px rgba(0,0,0,.25);
+  }
+
   .program__guides {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2446,6 +2522,15 @@
     .program__lead p:nth-child(n) {
       grid-column: 1;
       min-height: 150px;
+    }
+
+    .vacancy-proof__head {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .vacancy-proof__grid {
+      grid-template-columns: 1fr;
     }
 
     .program__guides {
@@ -5336,6 +5421,26 @@
       <p data-label="главная уникальность">Все направления расписаны <strong>ПОШАГОВО</strong> — от первого действия до результата.</p>
       <p data-label="если у тебя уже есть дело"><strong>Empire делает уклон в новичков:</strong> пошаговая система и поэтапность.<br><br>Но если ты уже фрилансер, в Empire ты научишься <strong>закрывать клиентов на бабки</strong>, а не видеть игнор или «не интересует».</p>
       <p data-label="wake up empire">Это не просто сборник инфы — это путь.</p>
+    </div>
+
+    <div class="vacancy-proof reveal" aria-label="Примеры вакансий внутри Empire">
+      <div class="vacancy-proof__head">
+        <div>
+          <span class="vacancy-proof__eyebrow">ветка вакансий</span>
+          <h3 class="vacancy-proof__title">Живые заявки внутри сообщества</h3>
+        </div>
+        <span class="vacancy-proof__status">обновляется постоянно</span>
+      </div>
+      <div class="vacancy-proof__grid">
+        <div class="vacancy-proof__column">
+          <img class="vacancy-proof__shot" src="vak.jpg" alt="Ветка «Вакансии — поиск нужных людей»" loading="lazy" decoding="async">
+          <img class="vacancy-proof__shot" src="miros.jpg" alt="Вакансия для монтажёров на постоянную работу" loading="lazy" decoding="async">
+        </div>
+        <div class="vacancy-proof__column">
+          <img class="vacancy-proof__shot" src="kir.jpg" alt="Поиск монтажёров с опытом работы" loading="lazy" decoding="async">
+          <img class="vacancy-proof__shot" src="ser.jpg" alt="Поиск специалистов по рассылкам" loading="lazy" decoding="async">
+        </div>
+      </div>
     </div>
 
     <div class="program__guides reveal" aria-label="Примеры пошаговых гайдов">
