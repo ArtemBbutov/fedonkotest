@@ -2755,11 +2755,18 @@
 
     .program__lead {
       grid-template-columns: 1fr;
+      width: 100%;
+      max-width: 100%;
     }
 
-    .program__lead p {
-      grid-column: 1;
+    .program__lead .program__card--system,
+    .program__lead .program__card--pro,
+    .program__lead .program__card--path {
+      grid-column: 1 / -1;
+      width: 100%;
+      min-width: 0;
       min-height: 150px;
+      overflow-wrap: anywhere;
     }
 
     .empire-directions__head {
@@ -5828,6 +5835,76 @@
       min-height: 48px;
     }
   }
+
+  /* Mobile performance mode: keep Safari's compositor workload predictable. */
+  @media (max-width: 768px), (pointer: coarse) {
+    *, *::before, *::after {
+      animation: none !important;
+    }
+
+    .page-sweep,
+    body::before {
+      display: none !important;
+    }
+
+    .season,
+    .hero__brandline,
+    .hero__kanji,
+    .hero__name,
+    .hero__name .row1,
+    .hero__name .row2,
+    .hero__name .ver,
+    .hero__sub,
+    .hero__cta,
+    .hero__side--past,
+    .hero__side--future,
+    .hero__spine {
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+    }
+
+    .cases__viewport {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+
+    .case-slot {
+      isolation: auto;
+      transform: none !important;
+      transform-style: flat;
+      background: linear-gradient(180deg, #141414, #0d0d0d);
+      box-shadow: 0 8px 22px rgba(0,0,0,.32);
+    }
+
+    .case-slot > * { transform: none; }
+
+    .case-slot::before,
+    .case-slot::after,
+    .case-slot__photo::after {
+      display: none;
+    }
+
+    .case-slot__photo,
+    .case-slot__photo img {
+      filter: none !important;
+      box-shadow: none;
+      transition: none;
+    }
+
+    .topbar,
+    .menu,
+    .cases__btn,
+    .reviews-card,
+    .charity__card,
+    .plan,
+    .contact-card {
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+    }
+
+    .charity__canvas { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -7569,10 +7646,12 @@
     });
   }
 
-  window.addEventListener('pointermove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  }, { passive: true });
+  if (fineCursor) {
+    window.addEventListener('pointermove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    }, { passive: true });
+  }
 
   function tick() {
     spotX += (mouseX - spotX) * 0.12;
@@ -7589,10 +7668,11 @@
     }
     requestAnimationFrame(tick);
   }
-  requestAnimationFrame(tick);
+  if (fineCursor) requestAnimationFrame(tick);
 
   // ---------- TILT CARDS (плавный lerp) ----------
-  document.querySelectorAll('[data-tilt]').forEach((card) => {
+  const canUsePointerEffects = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (canUsePointerEffects) document.querySelectorAll('[data-tilt]').forEach((card) => {
     // целевые и текущие значения — разводим, чтобы плавно догонять
     let tMx = 50, tMy = 50, tRx = 0, tRy = 0, tTy = 0;   // target
     let cMx = 50, cMy = 50, cRx = 0, cRy = 0, cTy = 0;   // current
@@ -7654,7 +7734,7 @@
     if (!card || !track) return;
 
     // дублируем содержимое для бесшовной прокрутки
-    track.innerHTML += track.innerHTML;
+    if (canUsePointerEffects) track.innerHTML += track.innerHTML;
 
     // лёгкое следование прожектора за курсором
     let raf = null, mx = 50, my = 50;
@@ -7749,6 +7829,7 @@
 
   // ---------- MAGNETIC BUTTONS ----------
   (function magnetic() {
+    if (!canUsePointerEffects) return;
     document.querySelectorAll('.btn').forEach((btn) => {
       const STRENGTH = 18;
       const RADIUS = 140;
@@ -7781,8 +7862,9 @@
   // ---------- SAKURA PETALS (canvas) ----------
   (function sakuraPetals() {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const compactDevice = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
     const canvas = document.getElementById('sakuraCanvas');
-    if (!canvas || reduceMotion) return;
+    if (!canvas || reduceMotion || compactDevice) return;
 
     const ctx = canvas.getContext('2d', { alpha: true });
     let dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
@@ -7954,6 +8036,7 @@
 (function(){
   const cv = document.querySelector('.charity__canvas');
   if (!cv) return;
+  if (window.matchMedia('(max-width: 768px), (pointer: coarse)').matches) return;
   const ctx = cv.getContext('2d');
   let w, h, dots = [];
 
