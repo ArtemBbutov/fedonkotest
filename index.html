@@ -5867,6 +5867,35 @@
     .cases__viewport {
       -webkit-mask-image: none;
       mask-image: none;
+      margin: 0;
+      padding: 12px 0 0;
+      overflow: visible;
+    }
+
+    .cases__track {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 14px;
+      width: 100%;
+      padding: 0;
+      overflow: visible;
+      scroll-snap-type: none;
+      scroll-behavior: auto;
+      cursor: default;
+      overscroll-behavior: auto;
+    }
+
+    .cases__track > .case-slot {
+      width: 100%;
+      min-width: 0;
+      contain: layout paint style;
+      content-visibility: auto;
+      contain-intrinsic-size: auto 620px;
+      scroll-snap-align: none;
+    }
+
+    .cases__nav {
+      display: none;
     }
 
     .case-slot {
@@ -7445,6 +7474,7 @@
     const next  = document.getElementById('casesNext');
     const dotsW = document.getElementById('casesDots');
     if (!track || !prev || !next || !dotsW) return;
+    if (window.matchMedia('(max-width: 768px), (pointer: coarse)').matches) return;
 
     const items = Array.from(track.children);
     const N = items.length;
