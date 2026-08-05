@@ -5200,33 +5200,22 @@
   .contact-card:hover .contact-card__cta::before { transform: translateX(120%); }
   .contact-card__cta-arrow {
     display: inline-flex;
-    position: relative;
-    width: 15px;
-    height: 15px;
-    flex: 0 0 15px;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    height: 17px;
+    flex: 0 0 17px;
     transition: transform .35s cubic-bezier(.4,1.4,.4,1);
   }
-  .contact-card__cta-arrow::before {
-    content: '';
-    position: absolute;
-    left: 1px;
-    bottom: 3px;
-    width: 13px;
-    height: 1.5px;
-    border-radius: 2px;
-    background: currentColor;
-    transform: rotate(-45deg);
-    transform-origin: center;
-  }
-  .contact-card__cta-arrow::after {
-    content: '';
-    position: absolute;
-    top: 1px;
-    right: 1px;
-    width: 7px;
-    height: 7px;
-    border-top: 1.5px solid currentColor;
-    border-right: 1.5px solid currentColor;
+  .contact-card__cta-arrow svg {
+    display: block;
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .contact-card:hover .contact-card__cta-arrow { transform: translate(3px, -3px); }
 
@@ -7252,7 +7241,7 @@
           <p class="contact-card__sub">Места ограничены — попасть можно только через личку. Напиши, чтобы забронировать место в&nbsp;сезоне&nbsp;2.</p>
         </span>
         <span class="contact-card__cta">
-          Написать <span class="contact-card__cta-arrow" aria-hidden="true"></span>
+          Написать <span class="contact-card__cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg></span>
         </span>
       </a>
       <div class="contact-dot">
