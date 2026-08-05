@@ -5946,6 +5946,55 @@
     }
 
     .charity__canvas { display: none; }
+
+    #pricing {
+      overflow: visible;
+      isolation: auto;
+    }
+
+    .pricing__bg { display: none; }
+
+    .pricing__grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .plan,
+    .plan--feature {
+      isolation: auto;
+      transform: none !important;
+      transition: none !important;
+      background: #101010 !important;
+      border-color: rgba(255,255,255,.12) !important;
+      box-shadow: none !important;
+    }
+
+    .plan::before,
+    .plan::after,
+    .plan--feature::after,
+    .pricing__cta::before {
+      display: none !important;
+    }
+
+    .plan > * { z-index: auto; }
+
+    .plan__icon,
+    .plan__tag,
+    .plan__price-val,
+    .pricing__cta,
+    .pricing__cta-icon,
+    .pricing__cta-arrow {
+      box-shadow: none !important;
+      text-shadow: none !important;
+    }
+
+    .pricing__cta {
+      isolation: auto;
+      transform: none !important;
+      transition: none !important;
+      background: #101010;
+    }
   }
 </style>
 </head>
@@ -7236,6 +7285,7 @@
 
   // ---------- COUNT-UP (метрики «Создателя») ----------
   (() => {
+    if (window.matchMedia('(max-width: 768px), (pointer: coarse)').matches) return;
     const nf = new Intl.NumberFormat('ru-RU');
     const easeOutExpo = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
