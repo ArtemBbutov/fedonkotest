@@ -5847,6 +5847,17 @@
       animation: none !important;
     }
 
+    .section,
+    .reveal,
+    .reveal--left,
+    .reveal--right,
+    .reveal--scale {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+      will-change: auto;
+    }
+
     .page-sweep,
     body::before {
       display: none !important;
@@ -5893,9 +5904,6 @@
     .cases__track > .case-slot {
       width: 100%;
       min-width: 0;
-      contain: layout paint style;
-      content-visibility: auto;
-      contain-intrinsic-size: auto 620px;
       scroll-snap-align: none;
     }
 
