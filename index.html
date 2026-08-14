@@ -989,11 +989,19 @@
     line-height: 1;
   }
   .hero__mark-dot {
+    position: relative;
+    flex: 0 0 auto;
     width: 6px; height: 6px;
     border-radius: 50%;
     background: rgba(255,175,205,0.9);
     box-shadow: 0 0 12px rgba(255,175,205,0.7);
     animation: pulse 2s ease infinite;
+    cursor: pointer;
+  }
+  .hero__mark-dot::after {
+    content: '';
+    position: absolute;
+    inset: -13px;
   }
   .hero__mark-tag {
     font-family: 'JetBrains Mono', monospace;
@@ -6306,6 +6314,106 @@
   @media (prefers-reduced-motion: reduce) {
     .pricing-message { transition: none; }
   }
+
+  /* ---------- SECRET PROMO ---------- */
+  .secret-promo {
+    position: fixed;
+    inset: 0;
+    z-index: 180;
+    display: grid;
+    place-items: center;
+    padding: 18px;
+    background: rgba(0,0,0,.72);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .35s ease, visibility 0s linear .35s;
+  }
+
+  .secret-promo.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+
+  .secret-promo__card {
+    position: relative;
+    width: min(430px, 100%);
+    padding: 30px 26px 27px;
+    overflow: hidden;
+    border: 1px solid rgba(255,175,205,.3);
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,175,205,.14), transparent 46%),
+      #121112;
+    box-shadow: 0 28px 80px rgba(0,0,0,.65), 0 0 40px rgba(255,175,205,.08);
+    text-align: center;
+    transform: translateY(12px) scale(.97);
+    transition: transform .48s cubic-bezier(.2,.75,.25,1);
+  }
+
+  .secret-promo.is-visible .secret-promo__card {
+    transform: translateY(0) scale(1);
+  }
+
+  .secret-promo__eyebrow {
+    display: block;
+    color: #ffafcd;
+    font: 700 9px/1 'JetBrains Mono', monospace;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+
+  .secret-promo__title {
+    margin: 12px 0 19px;
+    color: #fff;
+    font: 700 clamp(21px, 4vw, 29px)/1.12 'Bricolage Grotesque', sans-serif;
+    letter-spacing: -.025em;
+  }
+
+  .secret-promo__code {
+    display: block;
+    padding: 18px 14px;
+    border: 1px dashed rgba(255,175,205,.42);
+    border-radius: 16px;
+    background: rgba(255,175,205,.07);
+    color: #ffd7e6;
+    font: 800 clamp(34px, 9vw, 50px)/1 'JetBrains Mono', monospace;
+    letter-spacing: .08em;
+    text-shadow: 0 0 22px rgba(255,175,205,.22);
+  }
+
+  .secret-promo__note {
+    margin: 16px 0 0;
+    color: rgba(255,255,255,.58);
+    font: 600 13px/1.45 'Bricolage Grotesque', sans-serif;
+  }
+
+  .secret-promo__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 50%;
+    background: rgba(255,255,255,.05);
+    color: rgba(255,255,255,.6);
+    font: 400 19px/1 Arial, sans-serif;
+    cursor: pointer;
+  }
+
+  @media (max-width: 480px) {
+    .secret-promo__card { padding: 27px 18px 22px; border-radius: 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .secret-promo,
+    .secret-promo__card { transition: none; }
+  }
 </style>
 </head>
 <body>
@@ -6332,6 +6440,16 @@
   </span>
   <button class="pricing-message__close" type="button" aria-label="Закрыть уведомление">×</button>
 </aside>
+
+<div class="secret-promo" id="secretPromo" aria-hidden="true">
+  <section class="secret-promo__card" role="dialog" aria-modal="true" aria-labelledby="secretPromoTitle">
+    <button class="secret-promo__close" type="button" aria-label="Закрыть промокод">×</button>
+    <span class="secret-promo__eyebrow">секрет найден</span>
+    <h2 class="secret-promo__title" id="secretPromoTitle">Ты нашёл секретный промокод</h2>
+    <strong class="secret-promo__code">11!!</strong>
+    <p class="secret-promo__note">Покажи код при покупке и получи скидку 11%</p>
+  </section>
+</div>
 
 <div class="cursor cursor--ring is-hidden" id="cursorRing" aria-hidden="true"></div>
 <div class="cursor cursor--dot is-hidden" id="cursorDot" aria-hidden="true"></div>
@@ -7599,6 +7717,55 @@
 
     updateCountdown();
     timer = window.setInterval(updateCountdown, 1000);
+  })();
+
+  // ---------- SECRET PROMO EASTER EGG ----------
+  (() => {
+    const dot = document.querySelector('.hero__mark-dot');
+    const promo = document.getElementById('secretPromo');
+    if (!dot || !promo) return;
+
+    const close = promo.querySelector('.secret-promo__close');
+    let taps = 0;
+    let resetTimer = null;
+
+    const hidePromo = () => {
+      promo.classList.remove('is-visible');
+      promo.setAttribute('aria-hidden', 'true');
+    };
+
+    const showPromo = () => {
+      promo.classList.add('is-visible');
+      promo.setAttribute('aria-hidden', 'false');
+      window.setTimeout(() => close?.focus(), 80);
+    };
+
+    dot.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      taps += 1;
+
+      if (resetTimer) window.clearTimeout(resetTimer);
+      if (taps >= 3) {
+        taps = 0;
+        showPromo();
+        return;
+      }
+
+      resetTimer = window.setTimeout(() => {
+        taps = 0;
+      }, 1300);
+    });
+
+    close?.addEventListener('click', hidePromo);
+    promo.addEventListener('click', (event) => {
+      if (event.target === promo) hidePromo();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && promo.classList.contains('is-visible')) {
+        hidePromo();
+      }
+    });
   })();
 
   // ---------- SCROLL PROGRESS ----------
