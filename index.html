@@ -498,6 +498,32 @@
     text-shadow: 0 0 80px rgba(255,255,255,0.06);
     animation: kanjiBreath 8s ease-in-out infinite;
   }
+
+  .hero__panda {
+    position: absolute;
+    left: 50%;
+    top: 54%;
+    z-index: 0;
+    display: block;
+    width: min(48vw, 700px);
+    max-width: none;
+    height: auto;
+    opacity: .075;
+    transform: translate(-50%, -50%);
+    filter: grayscale(1) contrast(1.2);
+    -webkit-mask-image: radial-gradient(ellipse 48% 49% at center, #000 38%, rgba(0,0,0,.78) 62%, transparent 100%);
+            mask-image: radial-gradient(ellipse 48% 49% at center, #000 38%, rgba(0,0,0,.78) 62%, transparent 100%);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media (max-width: 720px) {
+    .hero__panda {
+      top: 49%;
+      width: 520px;
+      opacity: .045;
+    }
+  }
   @keyframes kanjiBreath {
     0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
     50%      { opacity: 0.7; transform: translate(-50%, -50%) scale(1.03); }
@@ -6345,6 +6371,7 @@
 <header class="hero" id="top">
   <div class="hero__halo"></div>
   <div class="hero__kanji" aria-hidden="true">覚</div>
+  <img class="hero__panda" src="panda-bg.jpg" alt="" aria-hidden="true" decoding="async">
 
   <div class="container">
     <div class="hero__inner">
