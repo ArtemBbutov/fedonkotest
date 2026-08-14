@@ -865,6 +865,7 @@
   .sale-countdown.is-expired .sale-countdown__date { display: none; }
 
   @media (max-width: 720px) {
+    .hero__sale-status { display: none; }
     .hero__brandline { order: 0; }
     .sale-countdown { order: 1; }
     .hero__split { order: 2; }
@@ -923,6 +924,31 @@
     opacity: 0;
     transform: translateY(10px);
     animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) .15s forwards;
+  }
+
+  .hero__sale-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 13px;
+    border: 1px solid rgba(255,255,255,.11);
+    border-radius: 999px;
+    background: rgba(255,255,255,.025);
+    color: rgba(255,255,255,.68);
+    font: 700 9px/1 'JetBrains Mono', monospace;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .hero__sale-status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ffafcd;
+    box-shadow: 0 0 10px rgba(255,175,205,.7);
+    animation: pulse 2s ease infinite;
   }
   .hero__mark {
     display: inline-flex;
@@ -6330,6 +6356,7 @@
           <span>Wake Up Empire</span>
           <span class="hero__mark-tag">season 02</span>
         </a>
+        <span class="hero__sale-status">Продажи открыты до 21 августа</span>
       </div>
 
       <!-- split narrative: 1.0 → 2.0 -->
