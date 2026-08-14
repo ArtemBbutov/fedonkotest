@@ -820,6 +820,15 @@
     text-transform: uppercase;
   }
 
+  .sale-countdown__warning {
+    display: block;
+    margin-top: 7px;
+    color: rgba(255,175,205,.82);
+    font: 700 9px/1.15 'JetBrains Mono', monospace;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+  }
+
   .sale-countdown__digits {
     display: grid;
     grid-template-columns: repeat(4, minmax(58px, 74px));
@@ -872,6 +881,7 @@
     .sale-countdown__eyebrow { margin-bottom: 4px; }
     .sale-countdown__title { font-size: clamp(15px, 4.6vw, 18px); }
     .sale-countdown__date { margin-top: 4px; }
+    .sale-countdown__warning { margin-top: 5px; font-size: 8px; }
 
     .sale-countdown__digits {
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -6395,6 +6405,7 @@
           <span class="sale-countdown__eyebrow">продажи закрываются</span>
           <strong class="sale-countdown__title" id="saleCountdownTitle">До полного закрытия Wake Up Empire 2.0</strong>
           <span class="sale-countdown__date">21 августа · 00:00 МСК</span>
+          <span class="sale-countdown__warning">Второго шанса не будет</span>
         </div>
         <div class="sale-countdown__digits" aria-hidden="true">
           <span class="sale-countdown__unit"><strong class="sale-countdown__value" data-countdown="days">00</strong><span class="sale-countdown__label">дней</span></span>
