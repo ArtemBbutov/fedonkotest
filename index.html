@@ -6323,7 +6323,9 @@
     display: grid;
     place-items: center;
     padding: 18px;
-    background: rgba(0,0,0,.72);
+    background: rgba(3,3,3,.82);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -6339,16 +6341,15 @@
 
   .secret-promo__card {
     position: relative;
-    width: min(430px, 100%);
-    padding: 30px 26px 27px;
+    width: min(440px, 100%);
+    padding: 17px;
     overflow: hidden;
-    border: 1px solid rgba(255,175,205,.3);
-    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 28px;
     background:
-      radial-gradient(circle at 50% 0%, rgba(255,175,205,.14), transparent 46%),
-      #121112;
-    box-shadow: 0 28px 80px rgba(0,0,0,.65), 0 0 40px rgba(255,175,205,.08);
-    text-align: center;
+      radial-gradient(circle at 10% 0%, rgba(255,175,205,.2), transparent 38%),
+      linear-gradient(145deg, #171516, #0d0d0e 68%);
+    box-shadow: 0 30px 90px rgba(0,0,0,.72), 0 0 0 1px rgba(255,175,205,.04) inset;
     transform: translateY(12px) scale(.97);
     transition: transform .48s cubic-bezier(.2,.75,.25,1);
   }
@@ -6358,7 +6359,13 @@
   }
 
   .secret-promo__eyebrow {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    min-height: 25px;
+    padding: 0 10px;
+    border: 1px solid rgba(255,175,205,.22);
+    border-radius: 999px;
+    background: rgba(255,175,205,.07);
     color: #ffafcd;
     font: 700 9px/1 'JetBrains Mono', monospace;
     letter-spacing: .18em;
@@ -6366,48 +6373,77 @@
   }
 
   .secret-promo__title {
-    margin: 12px 0 19px;
+    margin: 12px 38px 0 0;
     color: #fff;
-    font: 700 clamp(21px, 4vw, 29px)/1.12 'Bricolage Grotesque', sans-serif;
+    font: 700 clamp(22px, 4vw, 30px)/1.08 'Bricolage Grotesque', sans-serif;
     letter-spacing: -.025em;
   }
 
   .secret-promo__code {
-    display: block;
-    padding: 18px 14px;
-    border: 1px dashed rgba(255,175,205,.42);
-    border-radius: 16px;
-    background: rgba(255,175,205,.07);
-    color: #ffd7e6;
-    font: 800 clamp(34px, 9vw, 50px)/1 'JetBrains Mono', monospace;
-    letter-spacing: .08em;
-    text-shadow: 0 0 22px rgba(255,175,205,.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 82px;
+    margin-top: 16px;
+    padding: 15px 12px;
+    border: 1px dashed rgba(255,255,255,.27);
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,175,205,.08));
+    color: #fff;
+    font: 800 clamp(28px, 8vw, 43px)/1 'JetBrains Mono', monospace;
+    letter-spacing: .045em;
+    text-shadow: 0 0 24px rgba(255,175,205,.25);
   }
 
   .secret-promo__note {
-    margin: 16px 0 0;
-    color: rgba(255,255,255,.58);
-    font: 600 13px/1.45 'Bricolage Grotesque', sans-serif;
+    margin: 0;
+    padding: 14px 7px 2px;
+    color: rgba(255,255,255,.68);
+    font: 600 13px/1.4 'Bricolage Grotesque', sans-serif;
+    text-align: center;
+  }
+
+  .secret-promo__head {
+    position: relative;
+    min-height: 98px;
+    padding: 8px 0 8px 92px;
+  }
+
+  .secret-promo__panda {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 76px;
+    height: 76px;
+    border: 1px solid rgba(255,255,255,.17);
+    border-radius: 22px;
+    object-fit: cover;
+    filter: saturate(.72) contrast(1.08);
+    box-shadow: 0 10px 24px rgba(0,0,0,.35);
   }
 
   .secret-promo__close {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 16px;
+    right: 16px;
     display: grid;
     place-items: center;
     width: 30px;
     height: 30px;
     border: 1px solid rgba(255,255,255,.09);
     border-radius: 50%;
-    background: rgba(255,255,255,.05);
+    background: rgba(0,0,0,.28);
     color: rgba(255,255,255,.6);
     font: 400 19px/1 Arial, sans-serif;
     cursor: pointer;
   }
 
   @media (max-width: 480px) {
-    .secret-promo__card { padding: 27px 18px 22px; border-radius: 20px; }
+    .secret-promo__card { padding: 14px; border-radius: 23px; }
+    .secret-promo__head { min-height: 84px; padding-left: 76px; }
+    .secret-promo__panda { width: 64px; height: 64px; border-radius: 18px; }
+    .secret-promo__title { margin-top: 9px; font-size: 21px; }
+    .secret-promo__code { min-height: 72px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -6444,9 +6480,12 @@
 <div class="secret-promo" id="secretPromo" aria-hidden="true">
   <section class="secret-promo__card" role="dialog" aria-modal="true" aria-labelledby="secretPromoTitle">
     <button class="secret-promo__close" type="button" aria-label="Закрыть промокод">×</button>
-    <span class="secret-promo__eyebrow">секрет найден</span>
-    <h2 class="secret-promo__title" id="secretPromoTitle">Ты нашёл секретный промокод</h2>
-    <strong class="secret-promo__code">11!!</strong>
+    <div class="secret-promo__head">
+      <img class="secret-promo__panda" src="panda-bg.jpg" alt="" width="76" height="76" decoding="async">
+      <span class="secret-promo__eyebrow">секрет найден</span>
+      <h2 class="secret-promo__title" id="secretPromoTitle">Панда кое-что для тебя спрятала</h2>
+    </div>
+    <strong class="secret-promo__code">PANDA44!!</strong>
     <p class="secret-promo__note">Покажи код при покупке и получи скидку 11%</p>
   </section>
 </div>
