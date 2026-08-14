@@ -780,6 +780,103 @@
   }
   .hero__sub-text strong { color: var(--text); font-weight: 600; }
 
+  /* ---------- SALE COUNTDOWN ---------- */
+  .sale-countdown {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) auto;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    margin-top: -10px;
+    padding: 18px 20px;
+    border: 1px solid rgba(255,175,205,.2);
+    border-radius: 18px;
+    background: linear-gradient(120deg, rgba(255,175,205,.075), rgba(255,255,255,.018) 55%, rgba(255,175,205,.035));
+    box-shadow: 0 16px 44px rgba(0,0,0,.2);
+  }
+
+  .sale-countdown__eyebrow {
+    display: block;
+    margin-bottom: 6px;
+    color: #ffafcd;
+    font: 700 9px/1 'JetBrains Mono', monospace;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+
+  .sale-countdown__title {
+    display: block;
+    color: #fff;
+    font: 700 clamp(17px, 2vw, 23px)/1.1 'Bricolage Grotesque', sans-serif;
+    letter-spacing: -.02em;
+  }
+
+  .sale-countdown__date {
+    display: block;
+    margin-top: 6px;
+    color: rgba(255,255,255,.45);
+    font: 600 9px/1.2 'JetBrains Mono', monospace;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .sale-countdown__digits {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(58px, 74px));
+    gap: 8px;
+  }
+
+  .sale-countdown__unit {
+    display: grid;
+    place-items: center;
+    min-height: 64px;
+    padding: 9px 7px 7px;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 12px;
+    background: rgba(4,4,4,.38);
+  }
+
+  .sale-countdown__value {
+    color: #fff;
+    font: 750 clamp(21px, 2.5vw, 29px)/1 'Bricolage Grotesque', sans-serif;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.025em;
+  }
+
+  .sale-countdown__label {
+    margin-top: 5px;
+    color: rgba(255,255,255,.38);
+    font: 700 7px/1 'JetBrains Mono', monospace;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+  }
+
+  .sale-countdown.is-expired { grid-template-columns: 1fr; }
+  .sale-countdown.is-expired .sale-countdown__digits,
+  .sale-countdown.is-expired .sale-countdown__date { display: none; }
+
+  @media (max-width: 720px) {
+    .sale-countdown {
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 0;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .sale-countdown__digits {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .sale-countdown__unit {
+      min-height: 58px;
+      padding-inline: 4px;
+    }
+
+    .sale-countdown__value { font-size: clamp(20px, 7vw, 27px); }
+  }
+
   .hero__cta {
     display: flex;
     gap: 14px;
@@ -6284,6 +6381,20 @@
 
       </div>
 
+      <div class="sale-countdown" id="saleCountdown" role="timer" aria-label="До закрытия продаж">
+        <div class="sale-countdown__copy">
+          <span class="sale-countdown__eyebrow">продажи закрываются</span>
+          <strong class="sale-countdown__title" id="saleCountdownTitle">До закрытия продаж</strong>
+          <span class="sale-countdown__date">21 августа · 00:00 МСК</span>
+        </div>
+        <div class="sale-countdown__digits" aria-hidden="true">
+          <span class="sale-countdown__unit"><strong class="sale-countdown__value" data-countdown="days">00</strong><span class="sale-countdown__label">дней</span></span>
+          <span class="sale-countdown__unit"><strong class="sale-countdown__value" data-countdown="hours">00</strong><span class="sale-countdown__label">часов</span></span>
+          <span class="sale-countdown__unit"><strong class="sale-countdown__value" data-countdown="minutes">00</strong><span class="sale-countdown__label">минут</span></span>
+          <span class="sale-countdown__unit"><strong class="sale-countdown__value" data-countdown="seconds">00</strong><span class="sale-countdown__label">секунд</span></span>
+        </div>
+      </div>
+
       <p class="hero__manifest">
         Тебе больше не нужно искать «темку». Решение — перед тобой:
         <strong>пошаговая система от полного нуля до сотен тысяч.</strong>
@@ -7392,6 +7503,43 @@
 <script>
   // Год в футере
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ---------- SALE COUNTDOWN: 21 AUGUST 2026, 00:00 MSK ----------
+  (() => {
+    const countdown = document.getElementById('saleCountdown');
+    if (!countdown) return;
+
+    const deadline = new Date('2026-08-21T00:00:00+03:00').getTime();
+    const title = document.getElementById('saleCountdownTitle');
+    const fields = {
+      days: countdown.querySelector('[data-countdown="days"]'),
+      hours: countdown.querySelector('[data-countdown="hours"]'),
+      minutes: countdown.querySelector('[data-countdown="minutes"]'),
+      seconds: countdown.querySelector('[data-countdown="seconds"]')
+    };
+    let timer = null;
+
+    const pad = (value) => String(value).padStart(2, '0');
+    const updateCountdown = () => {
+      const remaining = deadline - Date.now();
+      if (remaining <= 0) {
+        countdown.classList.add('is-expired');
+        title.textContent = 'Продажи закрыты';
+        countdown.setAttribute('aria-label', 'Продажи закрыты');
+        if (timer) window.clearInterval(timer);
+        return;
+      }
+
+      const totalSeconds = Math.floor(remaining / 1000);
+      fields.days.textContent = pad(Math.floor(totalSeconds / 86400));
+      fields.hours.textContent = pad(Math.floor((totalSeconds % 86400) / 3600));
+      fields.minutes.textContent = pad(Math.floor((totalSeconds % 3600) / 60));
+      fields.seconds.textContent = pad(totalSeconds % 60);
+    };
+
+    updateCountdown();
+    timer = window.setInterval(updateCountdown, 1000);
+  })();
 
   // ---------- SCROLL PROGRESS ----------
   const scrollProgress = document.getElementById('scrollProgress');
