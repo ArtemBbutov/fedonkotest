@@ -856,13 +856,22 @@
   .sale-countdown.is-expired .sale-countdown__date { display: none; }
 
   @media (max-width: 720px) {
+    .hero__brandline { order: 0; }
+    .sale-countdown { order: 1; }
+    .hero__split { order: 2; }
+    .hero__manifest { order: 3; }
+
     .sale-countdown {
       grid-template-columns: 1fr;
-      gap: 14px;
+      gap: 10px;
       margin-top: 0;
-      padding: 15px;
+      padding: 12px;
       text-align: center;
     }
+
+    .sale-countdown__eyebrow { margin-bottom: 4px; }
+    .sale-countdown__title { font-size: clamp(15px, 4.6vw, 18px); }
+    .sale-countdown__date { margin-top: 4px; }
 
     .sale-countdown__digits {
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -870,11 +879,11 @@
     }
 
     .sale-countdown__unit {
-      min-height: 58px;
-      padding-inline: 4px;
+      min-height: 52px;
+      padding: 7px 4px 6px;
     }
 
-    .sale-countdown__value { font-size: clamp(20px, 7vw, 27px); }
+    .sale-countdown__value { font-size: clamp(19px, 6.5vw, 25px); }
   }
 
   .hero__cta {
@@ -6381,10 +6390,10 @@
 
       </div>
 
-      <div class="sale-countdown" id="saleCountdown" role="timer" aria-label="До закрытия продаж">
+      <div class="sale-countdown" id="saleCountdown" role="timer" aria-label="До полного закрытия Wake Up Empire 2.0">
         <div class="sale-countdown__copy">
           <span class="sale-countdown__eyebrow">продажи закрываются</span>
-          <strong class="sale-countdown__title" id="saleCountdownTitle">До закрытия продаж</strong>
+          <strong class="sale-countdown__title" id="saleCountdownTitle">До полного закрытия Wake Up Empire 2.0</strong>
           <span class="sale-countdown__date">21 августа · 00:00 МСК</span>
         </div>
         <div class="sale-countdown__digits" aria-hidden="true">
