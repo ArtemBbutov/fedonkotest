@@ -2570,6 +2570,11 @@
       rgba(255,255,255,.018);
   }
 
+  .vacancy-proof-heading {
+    margin-top: clamp(64px, 8vw, 104px);
+    margin-bottom: 28px;
+  }
+
   .vacancy-proof__head {
     display: flex;
     align-items: center;
@@ -2578,20 +2583,6 @@
     width: 100%;
     max-width: 860px;
     margin: 0 auto 18px;
-  }
-
-  .vacancy-proof__eyebrow {
-    color: rgba(255,175,205,.86);
-    font: 700 9px/1 'JetBrains Mono', monospace;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-  }
-
-  .vacancy-proof__title {
-    margin: 7px 0 0;
-    color: #fff;
-    font: 700 clamp(19px, 2.2vw, 28px)/1.15 'Bricolage Grotesque', sans-serif;
-    letter-spacing: -.02em;
   }
 
   .vacancy-proof__copy {
@@ -5660,8 +5651,9 @@
       margin-bottom: 14px;
     }
 
-    .vacancy-proof__title {
-      font-size: 21px;
+    .vacancy-proof-heading {
+      margin-top: 54px;
+      margin-bottom: 22px;
     }
 
     .vacancy-proof__copy {
@@ -6344,11 +6336,14 @@
       </div>
     </div>
 
+    <div class="section__head vacancy-proof-heading reveal">
+      <span class="section__kicker">вакансии · живые заявки</span>
+      <h2 class="section__title">Если ты фрилансер, у тебя будут клиенты. И вот почему</h2>
+    </div>
+
     <div class="vacancy-proof reveal" aria-label="Примеры вакансий внутри Empire">
       <div class="vacancy-proof__head">
         <div>
-          <span class="vacancy-proof__eyebrow">вакансии · живые заявки внутри сообщества</span>
-          <h3 class="vacancy-proof__title">Если ты фрилансер, у тебя будут клиенты. И вот почему</h3>
           <p class="vacancy-proof__copy">Ветка существует ещё со времён Wake Up 1.0. Тут постоянно ищут <strong>монтажёров, продажников, рассыльщиков</strong> и других специалистов.</p>
         </div>
       </div>
@@ -6372,15 +6367,6 @@
       <p class="program__card--system" data-label="главная уникальность">Все направления расписаны <strong>ПОШАГОВО</strong> — от первого действия до результата.</p>
       <p class="program__card--pro" data-label="если у тебя уже есть дело"><strong>Empire делает уклон в новичков:</strong> пошаговая система и поэтапность.<br><br>Но если ты уже фрилансер, в Empire ты научишься <strong>закрывать клиентов на бабки</strong>, а не видеть игнор или «не интересует».</p>
       <p class="program__card--path" data-label="wake up empire">Это не просто сборник инфы — это путь.</p>
-    </div>
-
-    <div class="program__guides reveal" aria-label="Примеры пошаговых гайдов">
-      <a class="program__guide" href="https://t.me/fedonko" target="_blank" rel="noopener" aria-label="Написать Федонко об инфобизнесе">
-        <img src="infob-hq.png" alt="Гайд «Инфобизнес — 5 шагов»" loading="lazy" decoding="async">
-      </a>
-      <a class="program__guide" href="https://t.me/fedonko" target="_blank" rel="noopener" aria-label="Написать Федонко о продажах в звонках">
-        <img src="prod-hq.png" alt="Гайд «Продажи в звонках — 5 шагов»" loading="lazy" decoding="async">
-      </a>
     </div>
 
     <div class="track reveal" id="track" hidden>
