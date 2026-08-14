@@ -6000,6 +6000,107 @@
       background: #101010;
     }
   }
+
+  /* ---------- PRICING MESSAGE ---------- */
+  .pricing-message {
+    position: fixed;
+    right: clamp(16px, 3vw, 36px);
+    bottom: clamp(16px, 3vw, 32px);
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: min(390px, calc(100vw - 32px));
+    padding: 17px 18px 17px 20px;
+    border: 1px solid rgba(255,175,205,.32);
+    border-radius: 18px;
+    background: #151214;
+    box-shadow: 0 18px 55px rgba(0,0,0,.52), 0 0 28px rgba(255,175,205,.08);
+    color: #fff;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(22px) scale(.97);
+    transition: opacity .42s ease, transform .42s cubic-bezier(.2,.85,.25,1), visibility 0s linear .42s;
+  }
+
+  .pricing-message.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+    transition-delay: 0s;
+  }
+
+  .pricing-message__mark {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(255,175,205,.28);
+    border-radius: 13px;
+    background: rgba(255,175,205,.09);
+    color: #ffafcd;
+    font-size: 19px;
+  }
+
+  .pricing-message__body { min-width: 0; }
+
+  .pricing-message__label {
+    display: block;
+    margin-bottom: 4px;
+    color: rgba(255,175,205,.72);
+    font: 700 8px/1 'JetBrains Mono', monospace;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+
+  .pricing-message__text {
+    margin: 0;
+    font: 650 clamp(16px, 2vw, 19px)/1.25 'Bricolage Grotesque', sans-serif;
+    letter-spacing: -.01em;
+  }
+
+  .pricing-message__close {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    margin-left: auto;
+    border: 0;
+    border-radius: 9px;
+    background: rgba(255,255,255,.06);
+    color: rgba(255,255,255,.58);
+    font: 400 21px/1 Arial, sans-serif;
+    cursor: pointer;
+  }
+
+  .pricing-message__close:hover {
+    background: rgba(255,255,255,.11);
+    color: #fff;
+  }
+
+  @media (max-width: 600px) {
+    .pricing-message {
+      right: 12px;
+      bottom: max(12px, env(safe-area-inset-bottom));
+      width: calc(100vw - 24px);
+      padding: 14px;
+      border-radius: 15px;
+    }
+
+    .pricing-message__mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pricing-message { transition: none; }
+  }
 </style>
 </head>
 <body>
@@ -6017,6 +6118,15 @@
 <canvas class="sakura-canvas" id="sakuraCanvas" aria-hidden="true"></canvas>
 
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<aside class="pricing-message" id="pricingMessage" role="status" aria-live="polite" aria-hidden="true">
+  <span class="pricing-message__mark" aria-hidden="true">♥</span>
+  <span class="pricing-message__body">
+    <span class="pricing-message__label">сообщение для тебя</span>
+    <span class="pricing-message__text">Сынок, я верю в тебя</span>
+  </span>
+  <button class="pricing-message__close" type="button" aria-label="Закрыть уведомление">×</button>
+</aside>
 
 <div class="cursor cursor--ring is-hidden" id="cursorRing" aria-hidden="true"></div>
 <div class="cursor cursor--dot is-hidden" id="cursorDot" aria-hidden="true"></div>
@@ -7340,6 +7450,41 @@
     });
   }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
   document.querySelectorAll('.section').forEach((el) => sectionIo.observe(el));
+
+  // ---------- PRICING MESSAGE ----------
+  (() => {
+    const pricing = document.getElementById('pricing');
+    const message = document.getElementById('pricingMessage');
+    if (!pricing || !message) return;
+
+    const close = message.querySelector('.pricing-message__close');
+    let shown = false;
+    let hideTimer = null;
+
+    const hideMessage = () => {
+      message.classList.remove('is-visible');
+      message.setAttribute('aria-hidden', 'true');
+      if (hideTimer) clearTimeout(hideTimer);
+    };
+
+    const showMessage = () => {
+      if (shown) return;
+      shown = true;
+      message.classList.add('is-visible');
+      message.setAttribute('aria-hidden', 'false');
+      hideTimer = window.setTimeout(hideMessage, 8000);
+    };
+
+    close?.addEventListener('click', hideMessage);
+
+    const pricingMessageObserver = new IntersectionObserver((entries, observer) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      showMessage();
+      observer.disconnect();
+    }, { threshold: 0.08, rootMargin: '0px 0px -12% 0px' });
+
+    pricingMessageObserver.observe(pricing);
+  })();
 
   // ---------- RESULT TIMELINE ----------
   (function resultTimeline() {
