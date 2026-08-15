@@ -7776,8 +7776,6 @@
     if (!dot || !promo) return;
 
     const close = promo.querySelector('.secret-promo__close');
-    let taps = 0;
-    let resetTimer = null;
 
     const hidePromo = () => {
       promo.classList.remove('is-visible');
@@ -7793,18 +7791,7 @@
     dot.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
-      taps += 1;
-
-      if (resetTimer) window.clearTimeout(resetTimer);
-      if (taps >= 3) {
-        taps = 0;
-        showPromo();
-        return;
-      }
-
-      resetTimer = window.setTimeout(() => {
-        taps = 0;
-      }, 1300);
+      showPromo();
     });
 
     close?.addEventListener('click', hidePromo);
